@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов» [![Build status][travis-image]][travis-url]
 
 * Студент: [Валентин Ердяков](https://up.htmlacademy.ru/react/6/user/1085399).
-* Наставник: `Неизвестно`.
+* Наставник: [Олег Зубов](https://htmlacademy.ru/profile/id42701).
 
 ---
 
