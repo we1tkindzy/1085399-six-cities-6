@@ -4,18 +4,20 @@ const FormSubmit = () => {
   const [, setUserComment] = useState(``);
   const [, setUserRating] = useState(``);
 
+  const ratingArray = [
+    {rating: 5, title: `perfect`},
+    {rating: 4, title: `good`},
+    {rating: 3, title: `not bad`},
+    {rating: 2, title: `badly`},
+    {rating: 1, title: `terribly`},
+  ];
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
   };
 
   const handleRatingName = (target) => {
-    const rating = new Map();
-    rating.set(`1`, `terribly`).set(`2`, `badly`).set(`3`, `not bad`).set(`4`, `good`).set(`5`, `perfect`);
-    for (const [key, value] of rating) {
-      if (target.value === key) {
-        setUserRating(value);
-      }
-    }
+    setUserRating(target.value);
   };
 
 
@@ -23,7 +25,20 @@ const FormSubmit = () => {
     <form onSubmit={handleSubmit} className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" onChange={({target}) => {
+
+        {ratingArray.map((star, id) => (
+          <React.Fragment key={id}>
+            <input className="form__rating-input visually-hidden" name="rating" value={star.rating} id={`${star.rating}-stars`} type="radio" onChange={({target}) => {
+              handleRatingName(target);
+            }}/>
+            <label htmlFor={`${star.rating}-stars`} className="reviews__rating-label form__rating-label" title={star.title}>
+              <svg className="form__star-image" width="37" height="33">
+                <use xlinkHref="#icon-star"></use>
+              </svg>
+            </label>
+          </React.Fragment>
+        ))}
+        {/* <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" onChange={({target}) => {
           handleRatingName(target);
         }}/>
         <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
@@ -66,7 +81,7 @@ const FormSubmit = () => {
           <svg className="form__star-image" width="37" height="33">
             <use xlinkHref="#icon-star"></use>
           </svg>
-        </label>
+        </label> */}
       </div>
       <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved"
         onChange={({target}) => {
