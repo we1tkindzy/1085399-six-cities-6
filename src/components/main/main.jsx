@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PlaceCard from '../card/card';
+import OffersList from '../offers-list/offers-list';
 
 const MainScreen = (props) => {
-  const {cardsCount} = props;
+  const {offers} = props;
 
   return (
     <div className="page page--gray page--main">
@@ -88,11 +88,7 @@ const MainScreen = (props) => {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-
-                {new Array(cardsCount).fill().map((card, i) => <PlaceCard key={i} card={card}/>)}
-
-              </div>
+              <OffersList offers={offers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
@@ -106,6 +102,7 @@ const MainScreen = (props) => {
 
 MainScreen.propTypes = {
   cardsCount: PropTypes.number.isRequired,
+  offers: PropTypes.array.isRequired,
 };
 
 export default MainScreen;
