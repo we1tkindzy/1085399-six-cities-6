@@ -8,7 +8,10 @@ export default [
     rating: 80,
     name: `Beautiful &amp; luxurious apartment at great location`,
     type: `Apartment`,
-
+    coords: {
+      lat: 52.3909553943508,
+      lng: 4.85309666406198
+    }
     // reviews: [
     //   {
     //     avatar: `avatar-max`,
@@ -27,7 +30,11 @@ export default [
     bookmarkActive: true,
     rating: 60,
     name: `Wood and stone place`,
-    type: `Private room`
+    type: `Private room`,
+    coords: {
+      lat: 52.369553943508,
+      lng: 4.85309666406198
+    }
   },
   {
     id: 3,
@@ -37,7 +44,11 @@ export default [
     bookmarkActive: false,
     rating: 80,
     name: `Canal View Prinsengracht`,
-    type: `Apartment`
+    type: `Apartment`,
+    coords: {
+      lat: 52.3909553943508,
+      lng: 4.929309666406198
+    }
   },
   {
     id: 4,
@@ -47,16 +58,10 @@ export default [
     bookmarkActive: false,
     rating: 100,
     name: `Nice, cozy, warm big bed apartment`,
-    type: `Apartment`
+    type: `Apartment`,
+    coords: {
+      lat: 52.3809553943508,
+      lng: 4.939309666406198
+    }
   }
 ];
-
-
-// premium: true/false
-// premium ? `<div className="place-card__mark">
-// <span>Premium</span>
-// </div>` : ``
-
-// bookmark_active: true/false
-// bookmark_active ? `place-card__bookmark-button--active` : ``
-// bookmark_active ? `In bookmarks` : `To bookmarks`
