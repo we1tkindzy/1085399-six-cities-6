@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import PlaceCard from '../card/card';
 
 const OffersList = (props) => {
-  const {offers} = props;
+  const {offers, offersListClasses} = props;
 
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <div className={`${offersListClasses}`}>
       {offers.map((card, id) => <PlaceCard key={card.id + id} card={card} />)}
     </div>
   );
@@ -14,6 +14,7 @@ const OffersList = (props) => {
 
 OffersList.propTypes = {
   offers: PropTypes.array.isRequired,
+  offersListClasses: PropTypes.string.isRequired,
 };
 
 export default OffersList;

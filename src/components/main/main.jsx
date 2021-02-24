@@ -6,6 +6,9 @@ import Map from '../map/map';
 const MainScreen = (props) => {
   const {offers} = props;
 
+  const styleMap = {height: `800px`};
+  const offersListClasses = `cities__places-list places__list tabs__content`;
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -89,11 +92,11 @@ const MainScreen = (props) => {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <OffersList offers={offers} />
+              <OffersList offers={offers} offersListClasses={offersListClasses}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={offers}/>
+                <Map offers={offers} styleMap={styleMap}/>
               </section>
             </div>
           </div>

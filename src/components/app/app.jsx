@@ -23,7 +23,7 @@ const App = (props) => {
           <LoginScreen />
         </Route>
         <Route exact path="/offer/:id">
-          <RoomScreen />
+          <RoomScreen offers={offers}/>
         </Route>
         <Route>
           <NotFoundPageScreen />

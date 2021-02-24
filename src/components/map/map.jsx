@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 const Map = (props) => {
   const mapRef = useRef();
 
-  const {offers} = props;
+  const {offers, styleMap} = props;
 
   const city = [52.38333, 4.9];
   const zoom = 12;
@@ -49,7 +49,7 @@ const Map = (props) => {
   }, []);
 
   return (
-    <div id="map" style={{height: `800px`}} ref={mapRef}></div>
+    <div id="map" style={styleMap} ref={mapRef}></div>
   );
 };
 
@@ -61,6 +61,7 @@ Map.propTypes = {
       lng: PropTypes.number.isRequired,
     })
   })).isRequired,
+  styleMap: PropTypes.object.isRequired,
 };
 
 export default Map;

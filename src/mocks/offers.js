@@ -6,21 +6,30 @@ export default [
     price: 120,
     bookmarkActive: true,
     rating: 80,
-    name: `Beautiful &amp; luxurious apartment at great location`,
+    name: `Beautiful & luxurious apartment at great location`,
     type: `Apartment`,
     coords: {
       lat: 52.3909553943508,
       lng: 4.85309666406198
-    }
-    // reviews: [
-    //   {
-    //     avatar: `avatar-max`,
-    //     name: `Max`,
-    //     rating: 80,
-    //     text: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.`,
-    //     date: `April 2019`
-    //   }
-    // ]
+    },
+    reviews: [
+      {
+        id: 1,
+        avatar: `max`,
+        name: `Max`,
+        rating: 80,
+        text: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.`,
+        date: `April 2019`
+      },
+      {
+        id: 2,
+        avatar: `max`,
+        name: `Ivan`,
+        rating: 60,
+        text: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.`,
+        date: `April 2020`
+      }
+    ]
   },
   {
     id: 2,
