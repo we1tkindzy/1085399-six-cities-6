@@ -12,9 +12,6 @@ const Room = (props) => {
 
   const otherRooms = offers.slice(1, offers.length);
 
-  const styleMap = {height: `580px`, width: `1144px`, margin: `0 auto`};
-  const offersListClasses = `near-places__list places__list`;
-
   const amountOffers = reviews.length;
 
   const premiumTemplate = premium ? `` : `visually-hidden`;
@@ -172,13 +169,13 @@ const Room = (props) => {
             </div>
           </div>
           <section className="property__map map">
-            <Map offers={otherRooms} styleMap={styleMap}/>
+            <Map offers={otherRooms} />
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OffersList offers={otherRooms} offersListClasses={offersListClasses}/>
+            <OffersList offers={otherRooms} />
           </section>
         </div>
       </main>
