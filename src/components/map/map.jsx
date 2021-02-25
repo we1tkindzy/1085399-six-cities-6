@@ -49,7 +49,7 @@ const Map = (props) => {
   }, []);
 
   return (
-    <div id="map" style={{height: `800px`}} ref={mapRef}></div>
+    <div id="map" style={{height: `100%`, width: `100%`}} ref={mapRef}></div>
   );
 };
 
