@@ -8,13 +8,13 @@ import RoomScreen from '../room/room';
 import NotFoundPageScreen from '../not-found-page/not-found-page';
 
 const App = (props) => {
-  const {cardsCount, offers} = props;
+  const {offers} = props;
 
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <MainScreen cardsCount={cardsCount} offers={offers}/>
+          <MainScreen offers={offers}/>
         </Route>
         <Route exact path="/favorites">
           <FavoriteScreen offers={offers}/>
@@ -34,7 +34,6 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  cardsCount: PropTypes.number.isRequired,
   offers: PropTypes.array.isRequired,
 };
 

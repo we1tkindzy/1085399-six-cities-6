@@ -1,15 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import {getRating} from '../../util';
 
 const PlaceCard = (props) => {
   const {card} = props;
-  const {id, premium, img, price, bookmarkActive, rating, name, type} = card;
+  const {id, isFavorite, isPremium, previewImage, price, rating, title, type} = card;
 
-  const premiumTemplate = premium ? `` : `visually-hidden`;
+  const ratingConversion = getRating(rating);
 
-  const bookmarkClass = bookmarkActive ? `place-card__bookmark-button--active` : ``;
-  const bookmarkText = bookmarkActive ? `In bookmarks` : `To bookmarks`;
+  const premiumTemplate = isPremium ? `` : `visually-hidden`;
+
+  const bookmarkClass = isFavorite ? `place-card__bookmark-button--active` : ``;
+  const bookmarkText = isFavorite ? `In bookmarks` : `To bookmarks`;
 
   return (
     <article className="cities__place-card place-card">
@@ -18,7 +21,7 @@ const PlaceCard = (props) => {
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
-          <img className="place-card__image" src={`img/${img}.jpg`} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={`${previewImage}`} width="260" height="200" alt="Place image" />
         </a>
       </div>
       <div className="place-card__info">
@@ -36,12 +39,12 @@ const PlaceCard = (props) => {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${rating}` + `%`}}></span>
+            <span style={{width: `${ratingConversion}` + `%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{name}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
@@ -52,12 +55,12 @@ const PlaceCard = (props) => {
 PlaceCard.propTypes = {
   card: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    premium: PropTypes.bool.isRequired,
-    img: PropTypes.string.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
+    isPremium: PropTypes.bool.isRequired,
+    previewImage: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    bookmarkActive: PropTypes.bool.isRequired,
     rating: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
   }).isRequired,
 };
