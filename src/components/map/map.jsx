@@ -2,23 +2,26 @@ import React, {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import "leaflet/dist/leaflet.css";
+// import {getOffers} from '../../util';
 
 const Map = (props) => {
+  const {offers, city} = props;
+  const {latitude, longitude, zoom} = city.location;
+
+  // const cityOffers = getOffers(city.name, offers);
+
   const mapRef = useRef();
-
-  const {offers} = props;
-
-  const city = [52.38333, 4.9];
-  const zoom = 12;
-
   useEffect(() => {
     mapRef.current = leaflet.map(`map`, {
-      center: city,
+      center: {
+        lat: latitude,
+        lng: longitude
+      },
       zoom,
       zoomControl: false,
       marker: true
     });
-    mapRef.current.setView(city, zoom);
+    mapRef.current.setView({lat: latitude, lng: longitude}, zoom);
 
     leaflet
       .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`, {
@@ -33,20 +36,22 @@ const Map = (props) => {
       });
 
       leaflet.marker({
-        lat: card.coords.lat,
-        lng: card.coords.lng
+        lat: card.location.latitude,
+        lng: card.location.longitude,
+        zoom: card.location.zoom
       },
       {
         icon: customIcon
       })
       .addTo(mapRef.current)
-      .bindPopup(card.name);
-
-      return () => {
-        mapRef.current.remove();
-      };
+      .bindPopup(card.title);
     });
-  }, []);
+
+    return () => {
+      mapRef.current.remove();
+    };
+
+  }, [city.name]);
 
   return (
     <div id="map" style={{height: `100%`, width: `100%`}} ref={mapRef}></div>
@@ -55,12 +60,20 @@ const Map = (props) => {
 
 Map.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     coords: PropTypes.shape({
       lat: PropTypes.number.isRequired,
       lng: PropTypes.number.isRequired,
     })
-  })).isRequired,
+  })),
+  city: PropTypes.shape({
+    location: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+      zoom: PropTypes.number.isRequired,
+    }),
+    name: PropTypes.string.isRequired,
+  }),
 };
 
 export default Map;

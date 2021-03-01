@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import {getRating} from '../../util';
 
 const Favorites = (props) => {
   const {offers} = props;
@@ -66,12 +67,12 @@ const Favorites = (props) => {
                         </div>
                         <div className="place-card__rating rating">
                           <div className="place-card__stars rating__stars">
-                            <span style={{width: `${card.rating}` + `%`}}></span>
+                            <span style={{width: `${getRating(card.rating)}` + `%`}}></span>
                             <span className="visually-hidden">Rating</span>
                           </div>
                         </div>
                         <h2 className="place-card__name">
-                          <a href="#">{card.name}</a>
+                          <a href="#">{card.title}</a>
                         </h2>
                         <p className="place-card__type">{card.type}</p>
                       </div>
