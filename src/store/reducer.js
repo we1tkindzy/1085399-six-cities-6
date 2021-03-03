@@ -1,10 +1,13 @@
 import {ActionType} from './action';
 import offers from '../mocks/offers';
+import {SortType, CityName} from '../const';
 
 
 const initialState = {
-  city: `Paris`,
+  city: CityName[0],
   offers,
+  activeSort: SortType.POPULAR,
+  activeOffer: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -19,6 +22,24 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         offers: action.payload
+      };
+
+    case ActionType.INCREMENT_SORT:
+      return {
+        ...state,
+        activeSort: action.payload
+      };
+
+    case ActionType.INCREMENT_ACTIVE_OFFER:
+      return {
+        ...state,
+        activeOffer: action.payload
+      };
+
+    case ActionType.INCREMENT_REMOVE_ACTIVE_OFFER:
+      return {
+        ...state,
+        activeOffer: false
       };
 
     default:

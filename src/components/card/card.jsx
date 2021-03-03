@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {getRating} from '../../util';
+import {connect} from 'react-redux';
+import {ActionCreator} from '../../store/action';
 
 const PlaceCard = (props) => {
-  const {card} = props;
+  const {card, activeOffer, removeActiveOffer} = props;
   const {id, isFavorite, isPremium, previewImage, price, rating, title, type} = card;
 
   const ratingConversion = getRating(rating);
@@ -14,8 +16,16 @@ const PlaceCard = (props) => {
   const bookmarkClass = isFavorite ? `place-card__bookmark-button--active` : ``;
   const bookmarkText = isFavorite ? `In bookmarks` : `To bookmarks`;
 
+  const cardHover = (cardId) => {
+    activeOffer(cardId);
+  };
+
+  const cardHoverLeave = () => {
+    removeActiveOffer();
+  };
+
   return (
-    <article className="cities__place-card place-card">
+    <article className="cities__place-card place-card" onMouseOver={() => cardHover(id)} onMouseLeave={() => cardHoverLeave()}>
       <div className={`place-card__mark ${premiumTemplate}`} >
         <span>Premium</span>
       </div>
@@ -63,6 +73,18 @@ PlaceCard.propTypes = {
     title: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
   }).isRequired,
+  activeOffer: PropTypes.func.isRequired,
+  removeActiveOffer: PropTypes.func.isRequired,
 };
 
-export default PlaceCard;
+const mapDispatchToProps = (dispatch) => ({
+  activeOffer(id) {
+    dispatch(ActionCreator.incrementActiveOffer(id));
+  },
+  removeActiveOffer() {
+    dispatch(ActionCreator.incrementRemoveActiveOffer());
+  }
+});
+
+export {PlaceCard};
+export default connect(null, mapDispatchToProps)(PlaceCard);

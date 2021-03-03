@@ -4,17 +4,15 @@ import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/action';
 import CitiesList from '../cities-list/cities-list';
 import OffersList from '../offers-list/offers-list';
+import Sort from "../sort/sort";
 import Map from '../map/map';
-import {getOffers} from '../../util';
+import {getOffers, sorting} from '../../util';
 
 const MainScreen = (props) => {
   const {offers, city} = props;
 
-  const cityOffers = getOffers(city, offers);
-
-
-  const cityCoords = cityOffers[0].city;
-  const amountOffers = cityOffers.length;
+  const cityCoords = offers[0].city;
+  const amountOffers = offers.length;
 
   return (
     <div className="page page--gray page--main">
@@ -53,26 +51,13 @@ const MainScreen = (props) => {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{amountOffers} places to stay in {city}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex="0">
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex="0">Popular</li>
-                  <li className="places__option" tabIndex="0">Price: low to high</li>
-                  <li className="places__option" tabIndex="0">Price: high to low</li>
-                  <li className="places__option" tabIndex="0">Top rated first</li>
-                </ul>
-              </form>
-              <OffersList offers={cityOffers} />
+              <Sort />
+
+              <OffersList offers={offers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={cityOffers} city={cityCoords}/>
+                <Map offers={offers} city={cityCoords}/>
               </section>
             </div>
           </div>
@@ -90,7 +75,7 @@ MainScreen.propTypes = {
 
 const mapStateToProps = (state) => ({
   city: state.city,
-  offers: state.offers,
+  offers: sorting(getOffers(state.city, state.offers), state.activeSort),
 });
 
 const mapDispatchToProps = (dispatch) => ({
