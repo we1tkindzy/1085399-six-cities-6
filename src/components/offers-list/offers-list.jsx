@@ -7,7 +7,7 @@ const OffersList = (props) => {
 
   return (
     <div className="near-places__list places__list tabs__content">
-      {offers.map((card, id) => <PlaceCard key={card.id + id} card={card} />)}
+      {offers.map((card, id) => <PlaceCard key={card + id} card={card} />)}
     </div>
   );
 };
