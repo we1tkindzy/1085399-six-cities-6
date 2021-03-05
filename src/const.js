@@ -12,3 +12,8 @@ export const SortType = {
   PRICE_HIGH: `Price: high to low`,
   RATING_HIGH: `Top rated first`
 };
+
+export const AuthorizationStatus = {
+  AUTH: `AUTH`,
+  NO_AUTH: `NO_AUTH`,
+};
