@@ -6,7 +6,7 @@ const OffersList = (props) => {
   const {offers} = props;
 
   return (
-    <div className="near-places__list places__list tabs__content">
+    <div className="cities__places-list places__list tabs__content">
       {offers.map((card, id) => <PlaceCard key={card + id} card={card} />)}
     </div>
   );

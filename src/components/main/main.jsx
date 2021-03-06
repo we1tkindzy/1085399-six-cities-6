@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/action';
@@ -7,9 +7,23 @@ import OffersList from '../offers-list/offers-list';
 import Sort from "../sort/sort";
 import Map from '../map/map';
 import {getOffers, sorting} from '../../util';
+import LoadingScreen from '../loading-screen/loading-screen';
+import {fetchOffersList} from "../../store/api-actions";
 
 const MainScreen = (props) => {
-  const {offers, city} = props;
+  const {offers, city, isDataLoaded, onLoadData} = props;
+
+  useEffect(() => {
+    if (!isDataLoaded) {
+      onLoadData();
+    }
+  }, [isDataLoaded]);
+
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   const cityCoords = offers[0].city;
   const amountOffers = offers.length;
@@ -71,17 +85,23 @@ MainScreen.propTypes = {
   offers: PropTypes.array.isRequired,
   city: PropTypes.string.isRequired,
   onUserClick: PropTypes.func.isRequired,
+  isDataLoaded: PropTypes.bool.isRequired,
+  onLoadData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   city: state.city,
   offers: sorting(getOffers(state.city, state.offers), state.activeSort),
+  isDataLoaded: state.isDataLoaded,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onUserClick() {
     dispatch(ActionCreator.incrementCity());
     dispatch(ActionCreator.incrementOffers());
+  },
+  onLoadData() {
+    dispatch(fetchOffersList());
   },
 });
 

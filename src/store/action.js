@@ -2,8 +2,10 @@ export const ActionType = {
   INCREMENT_CITY: `list/incrementCity`,
   INCREMENT_OFFERS: `list/incrementOffers`,
   INCREMENT_SORT: `list/sort`,
-  INCREMENT_ACTIVE_OFFER: `list/ActiveOffer`,
-  INCREMENT_REMOVE_ACTIVE_OFFER: `list/removeActiveOffer`
+  INCREMENT_ACTIVE_OFFER: `offers/ActiveOffer`,
+  INCREMENT_REMOVE_ACTIVE_OFFER: `offers/removeActiveOffer`,
+  LOAD_OFFERS: `data/loadOffers`,
+  REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
 };
 
 export const ActionCreator = {
@@ -24,5 +26,13 @@ export const ActionCreator = {
   }),
   incrementRemoveActiveOffer: () => ({
     type: ActionType.INCREMENT_REMOVE_ACTIVE_OFFER
+  }),
+  loadOffers: (offers) => ({
+    type: ActionType.LOAD_OFFERS,
+    payload: offers
+  }),
+  requiredAuthorization: (status) => ({
+    type: ActionType.REQUIRED_AUTHORIZATION,
+    payload: status
   })
 };
