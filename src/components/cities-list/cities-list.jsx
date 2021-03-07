@@ -19,7 +19,7 @@ const CitiesList = (props) => {
             <span>{cityName}</span>
           </a>
         </li>
-      )};
+      )}
     </ul>
   );
 };

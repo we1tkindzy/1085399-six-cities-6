@@ -6,6 +6,8 @@ export const ActionType = {
   INCREMENT_REMOVE_ACTIVE_OFFER: `offers/removeActiveOffer`,
   LOAD_OFFERS: `data/loadOffers`,
   REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
+  REDIRECT_TO_ROUTE: `/redirectToRoute`,
+  AUTHORIZATION_INFO: `user/login`,
 };
 
 export const ActionCreator = {
@@ -34,5 +36,13 @@ export const ActionCreator = {
   requiredAuthorization: (status) => ({
     type: ActionType.REQUIRED_AUTHORIZATION,
     payload: status
-  })
+  }),
+  redirectToRoute: (url) => ({
+    type: ActionType.REDIRECT_TO_ROUTE,
+    payload: url
+  }),
+  authorizationInfo: (info) => ({
+    type: ActionType.AUTHORIZATION_INFO,
+    payload: info
+  }),
 };

@@ -11,6 +11,7 @@ import {reducer} from './store/reducer';
 import {ActionCreator} from './store/action';
 import {checkAuth} from "./store/api-actions";
 import {AuthorizationStatus} from "./const";
+import {redirect} from "./store/middlewares/redirect";
 
 
 const api = createAPI(
@@ -20,17 +21,18 @@ const api = createAPI(
 const store = createStore(
     reducer,
     composeWithDevTools(
-        applyMiddleware(thunk.withExtraArgument(api))
+        applyMiddleware(thunk.withExtraArgument(api)),
+        applyMiddleware(redirect)
     )
 );
 
-store.dispatch(checkAuth());
-
-REactDOM.render(
-    <Provider store={store}>
-      <App
-        offers={offers}
-      />
-    </Provider>,
-    document.querySelector(`#root`)
-);
+store.dispatch(checkAuth()).then(() => {
+  REactDOM.render(
+      <Provider store={store}>
+        <App
+          offers={offers}
+        />
+      </Provider>,
+      document.querySelector(`#root`)
+  );
+});
