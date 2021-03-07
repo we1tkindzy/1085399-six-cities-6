@@ -6,6 +6,7 @@ const initialState = {
   city: CityName[0],
   offers: [],
   authorizationStatus: AuthorizationStatus.NO_AUTH,
+  authorizationInfo: {},
   isDataLoaded: false,
   activeSort: SortType.POPULAR,
   activeOffer: false,
@@ -54,6 +55,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         authorizationStatus: action.payload
+      };
+
+    case ActionType.AUTHORIZATION_INFO:
+      return {
+        ...state,
+        authorizationInfo: action.payload
       };
 
     default:
