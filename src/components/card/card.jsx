@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import {getRating} from '../../util';
+import {getRating, getOfferPath} from '../../util';
 import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/action';
+import {cardProp} from './card.prop';
 
 const PlaceCard = (props) => {
   const {card, activeOffer, removeActiveOffer} = props;
@@ -54,7 +55,7 @@ const PlaceCard = (props) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{title}</Link>
+          <Link to={getOfferPath(id)}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
@@ -63,16 +64,7 @@ const PlaceCard = (props) => {
 };
 
 PlaceCard.propTypes = {
-  card: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    isFavorite: PropTypes.bool.isRequired,
-    isPremium: PropTypes.bool.isRequired,
-    previewImage: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    rating: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-  }).isRequired,
+  card: PropTypes.shape(cardProp).isRequired,
   activeOffer: PropTypes.func.isRequired,
   removeActiveOffer: PropTypes.func.isRequired,
 };

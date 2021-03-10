@@ -6,7 +6,6 @@ import {createAPI} from './api';
 import {Provider} from 'react-redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import App from './components/app/app';
-import offers from "./mocks/offers";
 import {reducer} from './store/reducer';
 import {ActionCreator} from './store/action';
 import {checkAuth} from "./store/api-actions";
@@ -29,9 +28,7 @@ const store = createStore(
 store.dispatch(checkAuth()).then(() => {
   REactDOM.render(
       <Provider store={store}>
-        <App
-          offers={offers}
-        />
+        <App />
       </Provider>,
       document.querySelector(`#root`)
   );

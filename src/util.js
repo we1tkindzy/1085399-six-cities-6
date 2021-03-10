@@ -1,4 +1,4 @@
-import {SortType} from "./const";
+import {SortType, AppRoute} from "./const";
 
 const RATING_COUNT = 5;
 
@@ -22,3 +22,5 @@ export const sorting = (offers, sortType) => {
       return offers;
   }
 };
+
+export const getOfferPath = (id) => AppRoute.ROOM.replace(/id/, id);

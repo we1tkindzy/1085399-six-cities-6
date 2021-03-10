@@ -10,6 +10,10 @@ const initialState = {
   isDataLoaded: false,
   activeSort: SortType.POPULAR,
   activeOffer: false,
+  openedOffer: {},
+  nearOffers: [],
+  reviews: [],
+  favoriteOffers: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -51,6 +55,12 @@ const reducer = (state = initialState, action) => {
         isDataLoaded: true
       };
 
+    case ActionType.LOAD_OFFER:
+      return {
+        ...state,
+        openedOffer: action.payload
+      };
+
     case ActionType.REQUIRED_AUTHORIZATION:
       return {
         ...state,
@@ -61,6 +71,24 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         authorizationInfo: action.payload
+      };
+
+    case ActionType.LOAD_NEAR_OFFERS:
+      return {
+        ...state,
+        nearOffers: action.payload
+      };
+
+    case ActionType.LOAD_REVIEWS:
+      return {
+        ...state,
+        reviews: action.payload
+      };
+
+    case ActionType.LOAD_FAVORITE:
+      return {
+        ...state,
+        favoriteOffers: action.payload
       };
 
     default:

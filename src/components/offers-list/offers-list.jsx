@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PlaceCard from '../card/card';
+import {cardProp} from '../card/card.prop';
 
 const OffersList = (props) => {
   const {offers} = props;
@@ -13,7 +14,7 @@ const OffersList = (props) => {
 };
 
 OffersList.propTypes = {
-  offers: PropTypes.array.isRequired,
+  offers: PropTypes.arrayOf(PropTypes.shape(cardProp).isRequired).isRequired,
 };
 
 export default OffersList;

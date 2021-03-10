@@ -23,6 +23,7 @@ export const AppRoute = {
   LOGIN: `/login`,
   FAVORITES: `/favorites`,
   ROOM: `/offer/:id`,
+  NOT_FOUND: `/404`,
 };
 
 export const APIRoute = {
@@ -30,7 +31,7 @@ export const APIRoute = {
   OFFER: `/hotels/:id`,
   OFFERS_NEARBY: `/hotels/:hotel_id/nearby`,
   FAVORITES: `/favorite`,
-  REVIEWS: `/comments/:hotel_id`,
+  REVIEWS: `/comments`,
   LOGIN: `/login`,
   LOGOUT: `/logout`,
 };
