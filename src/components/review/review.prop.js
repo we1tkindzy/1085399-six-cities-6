@@ -8,7 +8,5 @@ export const reviewsProp = {
   user: PropTypes.shape({
     avatarUrl: PropTypes.string.isRequired,
     isPro: PropTypes.bool.isRequired,
-    // id: PropTypes.number.isRequired,
-    // name: PropTypes.string.isRequired,
   }).isRequired,
 };

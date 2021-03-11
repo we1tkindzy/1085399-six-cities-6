@@ -144,11 +144,6 @@ const Room = (props) => {
                   </span>
                 </div>
                 <div className="property__description">
-                  {/* {description.map((des, i) =>
-                    <p key={des + i} className="property__text">
-                      A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                    </p>
-                  )} */}
                   <p className="property__text">
                     {description}
                   </p>
