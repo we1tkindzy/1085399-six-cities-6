@@ -5,6 +5,10 @@ export const ActionType = {
   INCREMENT_ACTIVE_OFFER: `offers/ActiveOffer`,
   INCREMENT_REMOVE_ACTIVE_OFFER: `offers/removeActiveOffer`,
   LOAD_OFFERS: `data/loadOffers`,
+  LOAD_OFFER: `data/loadOffer`,
+  LOAD_NEAR_OFFERS: `data/loadNearOffers`,
+  LOAD_REVIEWS: `data/laodReviews`,
+  LOAD_FAVORITE: `data/loadFavorite`,
   REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
   REDIRECT_TO_ROUTE: `/redirectToRoute`,
   AUTHORIZATION_INFO: `user/login`,
@@ -33,6 +37,10 @@ export const ActionCreator = {
     type: ActionType.LOAD_OFFERS,
     payload: offers
   }),
+  loadOffer: (offer) => ({
+    type: ActionType.LOAD_OFFER,
+    payload: offer
+  }),
   requiredAuthorization: (status) => ({
     type: ActionType.REQUIRED_AUTHORIZATION,
     payload: status
@@ -44,5 +52,17 @@ export const ActionCreator = {
   authorizationInfo: (info) => ({
     type: ActionType.AUTHORIZATION_INFO,
     payload: info
+  }),
+  loadNearOffers: (offers) => ({
+    type: ActionType.LOAD_NEAR_OFFERS,
+    payload: offers
+  }),
+  laodReviews: (reviews) => ({
+    type: ActionType.LOAD_REVIEWS,
+    payload: reviews
+  }),
+  loadFavorite: (offers) => ({
+    type: ActionType.LOAD_FAVORITE,
+    payload: offers
   }),
 };

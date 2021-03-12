@@ -10,6 +10,7 @@ import Map from '../map/map';
 import {getOffers, sorting} from '../../util';
 import LoadingScreen from '../loading-screen/loading-screen';
 import {fetchOffersList} from "../../store/api-actions";
+import {cardProp} from '../card/card.prop';
 
 const MainScreen = (props) => {
   const {offers, city, isDataLoaded, onLoadData} = props;
@@ -46,7 +47,6 @@ const MainScreen = (props) => {
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
                     <Authorization />
-                    {/* <span className="header__user-name user__name">Oliver.conner@gmail.com</span> */}
                   </a>
                 </li>
               </ul>
@@ -84,7 +84,7 @@ const MainScreen = (props) => {
 };
 
 MainScreen.propTypes = {
-  offers: PropTypes.array.isRequired,
+  offers: PropTypes.arrayOf(PropTypes.shape(cardProp).isRequired).isRequired,
   city: PropTypes.string.isRequired,
   onUserClick: PropTypes.func.isRequired,
   isDataLoaded: PropTypes.bool.isRequired,

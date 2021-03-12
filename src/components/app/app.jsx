@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Switch, Route, Router as BrowserRouter} from 'react-router-dom';
 import MainScreen from '../main/main';
 import FavoriteScreen from '../favorites/favorites';
@@ -10,25 +9,23 @@ import PrivateRoute from '../private-route/private-route';
 import browserHistory from "../../browser-history";
 import {AppRoute} from '../../const';
 
-const App = (props) => {
-  const {offers} = props;
-
+const App = () => {
   return (
     <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.MAIN}>
-          <MainScreen offers={offers}/>
+          <MainScreen />
         </Route>
         <PrivateRoute exact
           path={AppRoute.FAVORITES}
-          render={() => <FavoriteScreen offers={offers} />}
+          render={() => <FavoriteScreen />}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.LOGIN}>
           <LoginScreen />
         </Route>
         <Route exact path={AppRoute.ROOM}>
-          <RoomScreen offers={offers}/>
+          <RoomScreen />
         </Route>
         <Route>
           <NotFoundPageScreen />
@@ -36,10 +33,6 @@ const App = (props) => {
       </Switch>
     </BrowserRouter>
   );
-};
-
-App.propTypes = {
-  offers: PropTypes.array.isRequired,
 };
 
 export default App;

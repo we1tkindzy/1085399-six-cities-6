@@ -1,8 +1,15 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
+import {submitComment} from '../../store/api-actions';
+import {cardProp} from '../card/card.prop';
+import {connect} from 'react-redux';
 
-const FormSubmit = () => {
-  const [, setUserComment] = useState(``);
-  const [, setUserRating] = useState(``);
+
+const FormSubmit = (props) => {
+  const {openedOffer, submitCommentOnServer} = props;
+
+  const [userComment, setUserComment] = useState(``);
+  const [userRating, setUserRating] = useState(``);
 
   const ratingArray = [
     {rating: 5, title: `perfect`},
@@ -14,6 +21,7 @@ const FormSubmit = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    submitCommentOnServer(openedOffer.id, {review: userComment, rating: userRating});
   };
 
   const handleRatingName = (target) => {
@@ -22,7 +30,7 @@ const FormSubmit = () => {
 
 
   return (
-    <form onSubmit={handleSubmit} className="reviews__form form" action="#" method="post">
+    <form onSubmit={(evt) => handleSubmit(evt)} className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {ratingArray.map((star, id) => (
@@ -52,4 +60,20 @@ const FormSubmit = () => {
   );
 };
 
-export default FormSubmit;
+FormSubmit.propTypes = {
+  openedOffer: PropTypes.shape(cardProp).isRequired,
+  submitCommentOnServer: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  openedOffer: state.openedOffer,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  submitCommentOnServer(id, review) {
+    dispatch(submitComment(id, review));
+  }
+});
+
+export {FormSubmit};
+export default connect(mapStateToProps, mapDispatchToProps)(FormSubmit);

@@ -3,13 +3,11 @@ import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import "leaflet/dist/leaflet.css";
 import {connect} from 'react-redux';
-// import {getOffers} from '../../util';
+import {cardProp} from '../card/card.prop';
 
 const Map = (props) => {
   const {offers, city, activeOffer} = props;
   const {latitude, longitude, zoom} = city.location;
-
-  // const cityOffers = getOffers(city.name, offers);
 
   const mapRef = useRef();
   useEffect(() => {
@@ -60,13 +58,7 @@ const Map = (props) => {
 };
 
 Map.propTypes = {
-  offers: PropTypes.arrayOf(PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    coords: PropTypes.shape({
-      lat: PropTypes.number.isRequired,
-      lng: PropTypes.number.isRequired,
-    })
-  })),
+  offers: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.shape(cardProp)), PropTypes.bool]).isRequired,
   city: PropTypes.shape({
     location: PropTypes.shape({
       latitude: PropTypes.number.isRequired,

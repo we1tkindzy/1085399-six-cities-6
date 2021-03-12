@@ -4,7 +4,8 @@ const BACKEND_URL = `https://6.react.pages.academy/six-cities`;
 const REQUEST_TIMEOUT = 5000;
 
 const HttpCode = {
-  UNAUTHORIZED: 401
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404
 };
 
 export const createAPI = (onUnauthorized) => {
@@ -31,4 +32,15 @@ export const createAPI = (onUnauthorized) => {
   api.interceptors.response.use(onSuccess, onFail);
 
   return api;
+};
+
+export const notExisteOffer = (err, notFound) => {
+  const {response} = err;
+
+  if (response.status === HttpCode.NOT_FOUND) {
+    notFound();
+    throw err;
+  }
+
+  throw err;
 };

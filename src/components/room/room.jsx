@@ -1,20 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useRouteMatch} from 'react-router-dom';
+import Authorization from '../authorization/authorization';
+import {AuthorizationStatus} from '../../const';
 import FormSubmit from '../form-submit/form-submit';
 import ReviewsList from '../reviews-list/rewiews-list';
+import {reviewsProp} from '../review/review.prop';
 import Map from '../map/map';
-import {getOffers, getRating} from '../../util';
+import {getRating} from '../../util';
 import OffersList from '../offers-list/offers-list';
+import {fetchOffer, fetchNearOffers, fetchReviews} from '../../store/api-actions';
+import LoadingScreen from '../../components/loading-screen/loading-screen';
+import {cardProp} from '../card/card.prop';
+
 
 const Room = (props) => {
-  const {offers, city} = props;
-  const cityOffers = getOffers(city, offers);
+  const {authorizationStatus, openedOffer, loadOffer, nearOffers, loadNearOffers, reviews, loadReviews} = props;
 
-  const {bedrooms, description, goods, host, images, isFavorite, isPremium, maxAdults, price, rating, title, type, reviews} = cityOffers[0];
+  const match = useRouteMatch();
+  const pathId = match.params.id.slice(1);
 
-  const cityName = cityOffers[0].city;
+  if (String(openedOffer.id) !== pathId) {
+    loadNearOffers(pathId);
+    loadReviews(pathId);
+    loadOffer(pathId);
+
+    return (
+      <LoadingScreen />
+    );
+  }
+
+
+  const {city, bedrooms, description, goods, host, images, isFavorite, isPremium, maxAdults, price, rating, title, type} = openedOffer;
+  const {avatarUrl, isPro, name} = host;
+
 
   const ratingConversion = getRating(rating);
 
@@ -24,12 +44,7 @@ const Room = (props) => {
   const bookmarkClass = isFavorite ? `property__bookmark-button--active` : ``;
   const bookmarkText = isFavorite ? `In bookmarks` : `To bookmarks`;
 
-
-  const {avatarUrl, isPro, name} = host;
   const proClass = isPro ? `property__avatar-wrapper--pro` : ``;
-
-
-  const otherRooms = cityOffers.slice(1, cityOffers.length);
 
   const amountOffers = reviews.length;
 
@@ -49,7 +64,7 @@ const Room = (props) => {
                   <a className="header__nav-link header__nav-link--profile" href="#">
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                    <Authorization />
                   </a>
                 </li>
               </ul>
@@ -62,7 +77,7 @@ const Room = (props) => {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {images.map((img, i) =>
+              {images.slice(0, 6).map((img, i) =>
                 <div key={img + i} className="property__image-wrapper">
                   <img className="property__image" src={`${img}`} alt="Photo studio"/>
                 </div>
@@ -129,11 +144,6 @@ const Room = (props) => {
                   </span>
                 </div>
                 <div className="property__description">
-                  {/* {description.map((des, i) =>
-                    <p key={des + i} className="property__text">
-                      A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                    </p>
-                  )} */}
                   <p className="property__text">
                     {description}
                   </p>
@@ -141,36 +151,70 @@ const Room = (props) => {
               </div>
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{amountOffers}</span></h2>
-                {<ReviewsList reviews={reviews}/>}
+                {
+                  reviews
+                    ? <ReviewsList reviews={reviews}/>
+                    : <LoadingScreen />
+                }
 
-                {<FormSubmit />}
+                {authorizationStatus === AuthorizationStatus.AUTH ? <FormSubmit /> : ``}
               </section>
             </div>
           </div>
           <section className="property__map map">
-            <Map offers={otherRooms} city={cityName}/>
+            {
+              nearOffers
+                ? <Map offers={nearOffers} city={city}/>
+                : <LoadingScreen />
+            }
           </section>
         </section>
-        <div className="container">
-          <section className="near-places places">
-            <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OffersList offers={otherRooms} />
-          </section>
-        </div>
+        {
+          nearOffers
+            ? <div className="container">
+              <section className="near-places places">
+                <h2 className="near-places__title">Other places in the neighbourhood</h2>
+                <OffersList offers={nearOffers} />
+              </section>
+            </div>
+            : <LoadingScreen />
+        }
       </main>
     </div>
   );
 };
 
 Room.propTypes = {
-  offers: PropTypes.array.isRequired,
+  authorizationStatus: PropTypes.string.isRequired,
+  openedOffer: PropTypes.oneOfType([PropTypes.shape(cardProp), PropTypes.object]).isRequired,
   city: PropTypes.string.isRequired,
+  nearOffers: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.shape(cardProp)), PropTypes.array]).isRequired,
+  reviews: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.shape(reviewsProp)), PropTypes.array]).isRequired,
+  loadOffer: PropTypes.func.isRequired,
+  loadNearOffers: PropTypes.func.isRequired,
+  loadReviews: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   city: state.city,
   offers: state.offers,
+  authorizationStatus: state.authorizationStatus,
+  openedOffer: state.openedOffer,
+  nearOffers: state.nearOffers,
+  reviews: state.reviews,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  loadOffer(id) {
+    dispatch(fetchOffer(id));
+  },
+  loadNearOffers(id) {
+    dispatch(fetchNearOffers(id));
+  },
+  loadReviews(id) {
+    dispatch(fetchReviews(id));
+  },
 });
 
 export {Room};
-export default connect(mapStateToProps, null)(Room);
+export default connect(mapStateToProps, mapDispatchToProps)(Room);

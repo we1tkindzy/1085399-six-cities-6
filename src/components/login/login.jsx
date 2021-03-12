@@ -1,5 +1,4 @@
 import React, {useRef} from 'react';
-// import {useHistory} from 'react-router-dom';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {login} from '../../store/api-actions';
@@ -10,8 +9,6 @@ const Login = (props) => {
   const {onSubmit} = props;
   const loginRef = useRef();
   const passwordRef = useRef();
-
-  // const history = useHistory();
 
   const handelSubmit = (evt) => {
     evt.preventDefault();
@@ -39,7 +36,6 @@ const Login = (props) => {
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
                     <Authorization />
-                    {/* <span className="header__login">Sign in</span> */}
                   </a>
                 </li>
               </ul>
@@ -81,7 +77,6 @@ const Login = (props) => {
                 />
               </div>
               <button
-                // onClick={() => history.push(`/`)}
                 className="login__submit form__submit button"
                 type="submit"
               >
