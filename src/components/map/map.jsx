@@ -53,7 +53,7 @@ const Map = (props) => {
   }, [city.name, activeOffer]);
 
   return (
-    <div id="map" style={{height: `100%`, width: `100%`}} ref={mapRef}></div>
+    <div id="map" style={{height: `100%`, width: `100%`}}></div>
   );
 };
 

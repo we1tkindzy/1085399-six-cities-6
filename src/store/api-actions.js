@@ -1,7 +1,7 @@
 import {ActionCreator} from "./action";
 import {AuthorizationStatus, APIRoute, AppRoute} from "../const";
 import {adaptOfferToclient, adaptReviewToClient} from "./adapter";
-import {notExisteOffer} from '../api';
+import {notExisteOffer, unAuthorizationUser} from '../api';
 
 export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(APIRoute.OFFERS)
@@ -37,6 +37,25 @@ export const submitComment = (id, {review: comment, rating}) => (dispatch, _getS
   api.post(`${APIRoute.REVIEWS}/${id}`, {comment, rating})
   .then(({data}) => dispatch(ActionCreator.laodReviews(data.map((commentItem) => adaptReviewToClient(commentItem)))))
   .catch(() => {})
+);
+
+export const toggleFavorite = (id, status) => (dispatch, _getState, api)=> (
+  api.post(`${APIRoute.FAVORITES}/${id}/${status}`)
+    .then(({data}) => {
+      const adaptedOffer = adaptOfferToclient(data);
+      dispatch(ActionCreator.toggleFavorite(adaptedOffer));
+
+      if (status) {
+        dispatch(ActionCreator.addToFavorite(adaptedOffer));
+      } else {
+        dispatch(ActionCreator.removeFromFavorite(adaptedOffer.id));
+      }
+    })
+    .catch((err) => {
+      unAuthorizationUser(
+          err, () => dispatch(ActionCreator.redirectToRoute(AppRoute.LOGIN))
+      );
+    })
 );
 
 export const checkAuth = () => (dispatch, _getState, api) => (

@@ -2,6 +2,31 @@ import {ActionType} from './action';
 import {SortType, CityName, AuthorizationStatus} from '../const';
 
 
+const getItemIndex = (list, id) => {
+  const idList = list.map((item) => item.id);
+  return idList.indexOf(id);
+};
+
+const toggleCardFavorite = (offer, currentOfferList) => {
+  const cardIndex = getItemIndex(currentOfferList, offer.id);
+  return (
+    [...currentOfferList.slice(0, cardIndex), offer, ...currentOfferList.slice((cardIndex + 1), currentOfferList.length)]
+  );
+};
+
+const addCardToFavoriteOffers = (newFavoriteOffer, currentFavoriteOffers) => {
+  return [...currentFavoriteOffers, newFavoriteOffer];
+};
+
+const removeCardFromFavoriteOffers = (offerId, currentFavoriteOffers) => {
+  const cardIndex = getItemIndex(currentFavoriteOffers, offerId);
+
+  return (
+    [...currentFavoriteOffers.slice(0, cardIndex), ...currentFavoriteOffers.slice((cardIndex + 1), currentFavoriteOffers.length)]
+  );
+};
+
+
 const initialState = {
   city: CityName[0],
   offers: [],
@@ -14,6 +39,7 @@ const initialState = {
   nearOffers: [],
   reviews: [],
   favoriteOffers: [],
+  isFavoriteOffersLoaded: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -88,7 +114,32 @@ const reducer = (state = initialState, action) => {
     case ActionType.LOAD_FAVORITE:
       return {
         ...state,
-        favoriteOffers: action.payload
+        favoriteOffers: action.payload,
+        isFavoriteOffersLoaded: true
+      };
+
+    case ActionType.TOGGLE_FAVORITE:
+      return {
+        ...state,
+        offers: toggleCardFavorite(action.payload, state.offers)
+      };
+
+    case ActionType.TOGGLE_OPENED_CARD_FAVORITE:
+      return {
+        ...state,
+        openedOffer: Object.assign({}, state.openedOffer, {isFavorite: !state.openedOffer.isFavorite})
+      };
+
+    case ActionType.ADD_TO_FAVORITE:
+      return {
+        ...state,
+        favoriteOffers: addCardToFavoriteOffers(action.payload, state.favoriteOffers)
+      };
+
+    case ActionType.REMOVE_FROM_FAVORITE:
+      return {
+        ...state,
+        favoriteOffers: removeCardFromFavoriteOffers(action.payload, state.favoriteOffers)
       };
 
     default:

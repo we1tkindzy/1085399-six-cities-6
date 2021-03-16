@@ -4,12 +4,15 @@ import {Link} from 'react-router-dom';
 import {getRating, getOfferPath} from '../../util';
 import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/action';
+import {toggleFavorite} from '../../store/api-actions';
 import {cardProp} from './card.prop';
+import {PageType} from '../../const';
 
 const PlaceCard = (props) => {
-  const {card, activeOffer, removeActiveOffer} = props;
+  const {card, activeOffer, removeActiveOffer, toggleFavoriteOnClick, pageType} = props;
   const {id, isFavorite, isPremium, previewImage, price, rating, title, type} = card;
 
+  const favoriteCard = PageType.FAVORITE;
   const ratingConversion = getRating(rating);
 
   const premiumTemplate = isPremium ? `` : `visually-hidden`;
@@ -25,23 +28,28 @@ const PlaceCard = (props) => {
     removeActiveOffer();
   };
 
+  const cardFavoriteClickHandler = (cardId, status) => {
+    const newStatus = Number(!status);
+    toggleFavoriteOnClick(cardId, newStatus);
+  };
+
   return (
-    <article className="cities__place-card place-card" onMouseOver={() => cardHover(id)} onMouseLeave={() => cardHoverLeave()}>
+    <article className={`${pageType === favoriteCard ? PageType.FAVORITE.article : `cities__place-card`} place-card`} onMouseOver={() => cardHover(id)} onMouseLeave={() => cardHoverLeave()}>
       <div className={`place-card__mark ${premiumTemplate}`} >
         <span>Premium</span>
       </div>
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
-          <img className="place-card__image" src={`${previewImage}`} width="260" height="200" alt="Place image" />
-        </a>
+      <div className={`${pageType === favoriteCard ? PageType.FAVORITE.img : `cities__image-wrapper`} place-card__image-wrapper`}>
+        <Link to={getOfferPath(id)}>
+          <img className="place-card__image" src={`${previewImage}`} width={`${pageType === favoriteCard ? PageType.FAVORITE.width : `260`}`} height={`${pageType === favoriteCard ? PageType.FAVORITE.height : `200`}`} alt="Place image" />
+        </Link>
       </div>
-      <div className="place-card__info">
+      <div className={`${pageType === favoriteCard ? PageType.FAVORITE.cardImfo : ``} place-card__info`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button button ${bookmarkClass}`} type="button">
+          <button onClick={() => cardFavoriteClickHandler(id, isFavorite)} className={`place-card__bookmark-button button ${bookmarkClass}`} type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -67,6 +75,8 @@ PlaceCard.propTypes = {
   card: PropTypes.shape(cardProp).isRequired,
   activeOffer: PropTypes.func.isRequired,
   removeActiveOffer: PropTypes.func.isRequired,
+  toggleFavoriteOnClick: PropTypes.func.isRequired,
+  pageType: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -75,6 +85,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   removeActiveOffer() {
     dispatch(ActionCreator.incrementRemoveActiveOffer());
+  },
+  toggleFavoriteOnClick(id, status) {
+    dispatch(toggleFavorite(id, status));
   }
 });
 

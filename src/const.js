@@ -35,3 +35,15 @@ export const APIRoute = {
   LOGIN: `/login`,
   LOGOUT: `/logout`,
 };
+
+export const PageType = {
+  MAIN: `cities__places-list tabs__content`,
+  ROOM: `near-places__list`,
+  FAVORITE: {
+    article: `favorites__card`,
+    img: `favorites__image-wrapper`,
+    cardImfo: `favorites__card-info`,
+    height: `110`,
+    width: `150`
+  },
+};

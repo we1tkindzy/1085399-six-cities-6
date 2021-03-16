@@ -1,22 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Link, useRouteMatch} from 'react-router-dom';
-import Authorization from '../authorization/authorization';
-import {AuthorizationStatus} from '../../const';
+import {useRouteMatch} from 'react-router-dom';
+import Header from '../header/header';
+import {AuthorizationStatus, PageType} from '../../const';
 import FormSubmit from '../form-submit/form-submit';
 import ReviewsList from '../reviews-list/rewiews-list';
 import {reviewsProp} from '../review/review.prop';
 import Map from '../map/map';
 import {getRating} from '../../util';
 import OffersList from '../offers-list/offers-list';
-import {fetchOffer, fetchNearOffers, fetchReviews} from '../../store/api-actions';
+import {fetchOffer, fetchNearOffers, fetchReviews, toggleFavorite} from '../../store/api-actions';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import {cardProp} from '../card/card.prop';
+import {ActionCreator} from '../../store/action';
 
 
 const Room = (props) => {
-  const {authorizationStatus, openedOffer, loadOffer, nearOffers, loadNearOffers, reviews, loadReviews} = props;
+  const {authorizationStatus, openedOffer, loadOffer, nearOffers, loadNearOffers, reviews, loadReviews, toggleFavoriteOnClick, toggleOpenedCardFavorite} = props;
 
   const match = useRouteMatch();
   const pathId = match.params.id.slice(1);
@@ -32,8 +33,14 @@ const Room = (props) => {
   }
 
 
-  const {city, bedrooms, description, goods, host, images, isFavorite, isPremium, maxAdults, price, rating, title, type} = openedOffer;
+  const {id, city, bedrooms, description, goods, host, images, isFavorite, isPremium, maxAdults, price, rating, title, type} = openedOffer;
   const {avatarUrl, isPro, name} = host;
+
+  const cardFavorClickHandler = (cardId, status) => {
+    const newStatus = status ? 0 : 1;
+    toggleFavoriteOnClick(cardId, newStatus);
+    toggleOpenedCardFavorite();
+  };
 
 
   const ratingConversion = getRating(rating);
@@ -50,28 +57,7 @@ const Room = (props) => {
 
   return (
     <div className="page">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Link className="header__logo-link" to="/">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </Link>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <Authorization />
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main className="page__main page__main--property">
         <section className="property">
@@ -94,7 +80,7 @@ const Room = (props) => {
                 <h1 className="property__name">
                   {title}
                 </h1>
-                <button className={`property__bookmark-button button ${bookmarkClass}`} type="button">
+                <button onClick={() => cardFavorClickHandler(id, bookmarkClass)} className={`property__bookmark-button button ${bookmarkClass}`} type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -174,7 +160,7 @@ const Room = (props) => {
             ? <div className="container">
               <section className="near-places places">
                 <h2 className="near-places__title">Other places in the neighbourhood</h2>
-                <OffersList offers={nearOffers} />
+                <OffersList offers={nearOffers} pageType={PageType.ROOM} />
               </section>
             </div>
             : <LoadingScreen />
@@ -193,6 +179,8 @@ Room.propTypes = {
   loadOffer: PropTypes.func.isRequired,
   loadNearOffers: PropTypes.func.isRequired,
   loadReviews: PropTypes.func.isRequired,
+  toggleFavoriteOnClick: PropTypes.func.isRequired,
+  toggleOpenedCardFavorite: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -213,6 +201,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   loadReviews(id) {
     dispatch(fetchReviews(id));
+  },
+  toggleFavoriteOnClick(id, status) {
+    dispatch(toggleFavorite(id, status));
+  },
+  toggleOpenedCardFavorite() {
+    dispatch(ActionCreator.toggleOpenedCardFavorite());
   },
 });
 

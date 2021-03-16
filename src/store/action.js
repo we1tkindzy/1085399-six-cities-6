@@ -12,6 +12,10 @@ export const ActionType = {
   REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
   REDIRECT_TO_ROUTE: `/redirectToRoute`,
   AUTHORIZATION_INFO: `user/login`,
+  TOGGLE_FAVORITE: `data/toggleFavorite`,
+  TOGGLE_OPENED_CARD_FAVORITE: `data/toggleOpenedCardFavorite`,
+  ADD_TO_FAVORITE: `data/addToFavorite`,
+  REMOVE_FROM_FAVORITE: `data/removeFromFavorite`,
 };
 
 export const ActionCreator = {
@@ -64,5 +68,20 @@ export const ActionCreator = {
   loadFavorite: (offers) => ({
     type: ActionType.LOAD_FAVORITE,
     payload: offers
+  }),
+  toggleFavorite: (id) => ({
+    type: ActionType.TOGGLE_FAVORITE,
+    payload: id
+  }),
+  toggleOpenedCardFavorite: () => ({
+    type: ActionType.TOGGLE_OPENED_CARD_FAVORITE
+  }),
+  addToFavorite: (offer) => ({
+    type: ActionType.ADD_TO_FAVORITE,
+    payload: offer
+  }),
+  removeFromFavorite: (id) => ({
+    type: ActionType.REMOVE_FROM_FAVORITE,
+    payload: id
   }),
 };
