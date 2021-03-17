@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import PropTypes from 'prop-types';
 import {submitComment} from '../../store/api-actions';
-import {cardProp} from '../card/card.prop';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
+const FormSubmit = () => {
+  const {openedOffer} = useSelector((state) => state.DATA);
 
-const FormSubmit = (props) => {
-  const {openedOffer, submitCommentOnServer} = props;
+  const dispatch = useDispatch();
 
   const [userComment, setUserComment] = useState(``);
   const [userRating, setUserRating] = useState(``);
@@ -21,7 +20,7 @@ const FormSubmit = (props) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    submitCommentOnServer(openedOffer.id, {review: userComment, rating: userRating});
+    dispatch(submitComment(openedOffer.id, {review: userComment, rating: userRating}));
   };
 
   const handleRatingName = (target) => {
@@ -60,20 +59,4 @@ const FormSubmit = (props) => {
   );
 };
 
-FormSubmit.propTypes = {
-  openedOffer: PropTypes.shape(cardProp).isRequired,
-  submitCommentOnServer: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  openedOffer: state.openedOffer,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  submitCommentOnServer(id, review) {
-    dispatch(submitComment(id, review));
-  }
-});
-
-export {FormSubmit};
-export default connect(mapStateToProps, mapDispatchToProps)(FormSubmit);
+export default FormSubmit;

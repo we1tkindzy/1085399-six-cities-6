@@ -2,7 +2,7 @@ import {SortType, AppRoute} from "./const";
 
 const RATING_COUNT = 5;
 
-export const getOffers = (city, offers) => {
+export const getCurrentOffers = (city, offers) => {
   return offers.filter((offer) => offer.city.name === city);
 };
 

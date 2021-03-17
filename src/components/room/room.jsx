@@ -1,31 +1,31 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {useRouteMatch} from 'react-router-dom';
 import Header from '../header/header';
 import {AuthorizationStatus, PageType} from '../../const';
 import FormSubmit from '../form-submit/form-submit';
 import ReviewsList from '../reviews-list/rewiews-list';
-import {reviewsProp} from '../review/review.prop';
 import Map from '../map/map';
 import {getRating} from '../../util';
 import OffersList from '../offers-list/offers-list';
-import {fetchOffer, fetchNearOffers, fetchReviews, toggleFavorite} from '../../store/api-actions';
+import {fetchOffer, fetchNearOffers, fetchReviews, onToggleCardFavorite} from '../../store/api-actions';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
-import {cardProp} from '../card/card.prop';
-import {ActionCreator} from '../../store/action';
+import {toggleOpenedCardFavorite} from '../../store/action';
 
 
-const Room = (props) => {
-  const {authorizationStatus, openedOffer, loadOffer, nearOffers, loadNearOffers, reviews, loadReviews, toggleFavoriteOnClick, toggleOpenedCardFavorite} = props;
+const Room = () => {
+  const {authorizationStatus} = useSelector((state) => state.USER);
+  const {openedOffer, nearOffers, reviews} = useSelector((state) => state.DATA);
+
+  const dispatch = useDispatch();
 
   const match = useRouteMatch();
   const pathId = match.params.id.slice(1);
 
   if (String(openedOffer.id) !== pathId) {
-    loadNearOffers(pathId);
-    loadReviews(pathId);
-    loadOffer(pathId);
+    dispatch(fetchNearOffers(pathId));
+    dispatch(fetchReviews(pathId));
+    dispatch(fetchOffer(pathId));
 
     return (
       <LoadingScreen />
@@ -38,8 +38,8 @@ const Room = (props) => {
 
   const cardFavorClickHandler = (cardId, status) => {
     const newStatus = status ? 0 : 1;
-    toggleFavoriteOnClick(cardId, newStatus);
-    toggleOpenedCardFavorite();
+    dispatch(onToggleCardFavorite(cardId, newStatus));
+    dispatch(toggleOpenedCardFavorite());
   };
 
 
@@ -170,45 +170,4 @@ const Room = (props) => {
   );
 };
 
-Room.propTypes = {
-  authorizationStatus: PropTypes.string.isRequired,
-  openedOffer: PropTypes.oneOfType([PropTypes.shape(cardProp), PropTypes.object]).isRequired,
-  city: PropTypes.string.isRequired,
-  nearOffers: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.shape(cardProp)), PropTypes.array]).isRequired,
-  reviews: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.shape(reviewsProp)), PropTypes.array]).isRequired,
-  loadOffer: PropTypes.func.isRequired,
-  loadNearOffers: PropTypes.func.isRequired,
-  loadReviews: PropTypes.func.isRequired,
-  toggleFavoriteOnClick: PropTypes.func.isRequired,
-  toggleOpenedCardFavorite: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  city: state.city,
-  offers: state.offers,
-  authorizationStatus: state.authorizationStatus,
-  openedOffer: state.openedOffer,
-  nearOffers: state.nearOffers,
-  reviews: state.reviews,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  loadOffer(id) {
-    dispatch(fetchOffer(id));
-  },
-  loadNearOffers(id) {
-    dispatch(fetchNearOffers(id));
-  },
-  loadReviews(id) {
-    dispatch(fetchReviews(id));
-  },
-  toggleFavoriteOnClick(id, status) {
-    dispatch(toggleFavorite(id, status));
-  },
-  toggleOpenedCardFavorite() {
-    dispatch(ActionCreator.toggleOpenedCardFavorite());
-  },
-});
-
-export {Room};
-export default connect(mapStateToProps, mapDispatchToProps)(Room);
+export default Room;

@@ -1,25 +1,27 @@
 import React, {useEffect} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {ActionCreator} from '../../store/action';
+import {useSelector, useDispatch} from 'react-redux';
 import Header from '../header/header';
 import CitiesList from '../cities-list/cities-list';
 import OffersList from '../offers-list/offers-list';
 import Sort from "../sort/sort";
 import Map from '../map/map';
 import MainEmpty from '../main-empty/main-empty';
-import {getOffers, sorting} from '../../util';
+import {getCurrentOffers, sorting} from '../../util';
 import LoadingScreen from '../loading-screen/loading-screen';
 import {fetchOffersList} from "../../store/api-actions";
-import {cardProp} from '../card/card.prop';
 import {PageType} from '../../const';
 
-const MainScreen = (props) => {
-  const {offers, city, isDataLoaded, onLoadData} = props;
+const MainScreen = () => {
+  const {city, activeSort} = useSelector((state) => state.OFFERS);
+  const {offers, isDataLoaded} = useSelector((state) => state.DATA);
+
+  const dispatch = useDispatch();
+
+  const cityOffers = sorting(getCurrentOffers(city, offers), activeSort);
 
   useEffect(() => {
     if (!isDataLoaded) {
-      onLoadData();
+      dispatch(fetchOffersList());
     }
   }, [isDataLoaded]);
 
@@ -29,8 +31,8 @@ const MainScreen = (props) => {
     );
   }
 
-  const cityCoords = offers[0].city;
-  const amountOffers = offers.length;
+  const cityCoords = cityOffers[0].city;
+  const amountOffers = cityOffers.length;
 
   return (
     <div className="page page--gray page--main">
@@ -52,11 +54,11 @@ const MainScreen = (props) => {
                 <b className="places__found">{amountOffers} places to stay in {city}</b>
                 <Sort />
 
-                <OffersList offers={offers} pageType={PageType.MAIN} />
+                <OffersList offers={cityOffers} pageType={PageType.MAIN} />
               </section>
               <div className="cities__right-section">
                 <section className="cities__map map">
-                  <Map offers={offers} city={cityCoords}/>
+                  <Map offers={cityOffers} city={cityCoords}/>
                 </section>
               </div>
             </div>
@@ -68,29 +70,4 @@ const MainScreen = (props) => {
   );
 };
 
-MainScreen.propTypes = {
-  offers: PropTypes.arrayOf(PropTypes.shape(cardProp).isRequired).isRequired,
-  city: PropTypes.string.isRequired,
-  onUserClick: PropTypes.func.isRequired,
-  isDataLoaded: PropTypes.bool.isRequired,
-  onLoadData: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  city: state.city,
-  offers: sorting(getOffers(state.city, state.offers), state.activeSort),
-  isDataLoaded: state.isDataLoaded,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onUserClick() {
-    dispatch(ActionCreator.incrementCity());
-    dispatch(ActionCreator.incrementOffers());
-  },
-  onLoadData() {
-    dispatch(fetchOffersList());
-  },
-});
-
-export {MainScreen};
-export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);
+export default MainScreen;

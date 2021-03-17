@@ -1,14 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {CityName} from '../../const';
-import {ActionCreator} from '../../store/action';
-import {connect} from 'react-redux';
+import {incrementCity} from '../../store/action';
+import {useSelector, useDispatch} from 'react-redux';
 
-const CitiesList = (props) => {
-  const {city, onUserClick} = props;
+const CitiesList = () => {
+  const {city} = useSelector((state) => state.OFFERS);
+
+  const dispatch = useDispatch();
 
   const menuClickhandler = (currentCity) => {
-    onUserClick(currentCity);
+    dispatch(incrementCity(currentCity));
   };
 
   return (
@@ -24,24 +25,4 @@ const CitiesList = (props) => {
   );
 };
 
-CitiesList.propTypes = {
-  city: PropTypes.string.isRequired,
-  onUserClick: PropTypes.func.isRequired,
-  getOffers: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  city: state.city,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onUserClick(city) {
-    dispatch(ActionCreator.incrementCity(city));
-  },
-  getOffers() {
-    dispatch(ActionCreator.incrementOffers());
-  },
-});
-
-export {CitiesList};
-export default connect(mapStateToProps, mapDispatchToProps)(CitiesList);
+export default CitiesList;

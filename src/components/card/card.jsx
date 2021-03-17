@@ -2,15 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {getRating, getOfferPath} from '../../util';
-import {connect} from 'react-redux';
-import {ActionCreator} from '../../store/action';
-import {toggleFavorite} from '../../store/api-actions';
+import {useDispatch} from 'react-redux';
+import {incrementActiveOffer, incrementRemoveActiveOffer} from '../../store/action';
+import {onToggleCardFavorite} from '../../store/api-actions';
 import {cardProp} from './card.prop';
 import {PageType} from '../../const';
 
 const PlaceCard = (props) => {
-  const {card, activeOffer, removeActiveOffer, toggleFavoriteOnClick, pageType} = props;
+  const {card, pageType} = props;
   const {id, isFavorite, isPremium, previewImage, price, rating, title, type} = card;
+
+  const dispatch = useDispatch();
 
   const favoriteCard = PageType.FAVORITE;
   const ratingConversion = getRating(rating);
@@ -21,16 +23,16 @@ const PlaceCard = (props) => {
   const bookmarkText = isFavorite ? `In bookmarks` : `To bookmarks`;
 
   const cardHover = (cardId) => {
-    activeOffer(cardId);
+    dispatch(incrementActiveOffer(cardId));
   };
 
   const cardHoverLeave = () => {
-    removeActiveOffer();
+    dispatch(incrementRemoveActiveOffer());
   };
 
   const cardFavoriteClickHandler = (cardId, status) => {
     const newStatus = Number(!status);
-    toggleFavoriteOnClick(cardId, newStatus);
+    dispatch(onToggleCardFavorite(cardId, newStatus));
   };
 
   return (
@@ -73,23 +75,7 @@ const PlaceCard = (props) => {
 
 PlaceCard.propTypes = {
   card: PropTypes.shape(cardProp).isRequired,
-  activeOffer: PropTypes.func.isRequired,
-  removeActiveOffer: PropTypes.func.isRequired,
-  toggleFavoriteOnClick: PropTypes.func.isRequired,
   pageType: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  activeOffer(id) {
-    dispatch(ActionCreator.incrementActiveOffer(id));
-  },
-  removeActiveOffer() {
-    dispatch(ActionCreator.incrementRemoveActiveOffer());
-  },
-  toggleFavoriteOnClick(id, status) {
-    dispatch(toggleFavorite(id, status));
-  }
-});
-
-export {PlaceCard};
-export default connect(null, mapDispatchToProps)(PlaceCard);
+export default PlaceCard;

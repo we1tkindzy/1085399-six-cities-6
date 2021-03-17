@@ -1,21 +1,21 @@
 import React, {useRef} from 'react';
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
+import {useDispatch} from "react-redux";
 import {login} from '../../store/api-actions';
 import Header from '../header/header';
 
-const Login = (props) => {
-  const {onSubmit} = props;
+const Login = () => {
+  const dispatch = useDispatch();
+
   const loginRef = useRef();
   const passwordRef = useRef();
 
   const handelSubmit = (evt) => {
     evt.preventDefault();
 
-    onSubmit({
+    dispatch(login({
       login: loginRef.current.value,
       password: passwordRef.current.value,
-    });
+    }));
   };
 
   return (
@@ -65,7 +65,7 @@ const Login = (props) => {
           <section className="locations locations--login locations--current">
             <div className="locations__item">
               <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
+                <span>Paris</span>
               </a>
             </div>
           </section>
@@ -75,15 +75,4 @@ const Login = (props) => {
   );
 };
 
-Login.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit(authData) {
-    dispatch(login(authData));
-  }
-});
-
-export {Login};
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;
