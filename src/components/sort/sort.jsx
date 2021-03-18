@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import PropTypes from 'prop-types';
 import {SortType} from '../../const';
-import {ActionCreator} from '../../store/action';
-import {connect} from 'react-redux';
+import {incrementSort} from '../../store/action';
+import {useSelector, useDispatch} from 'react-redux';
 
-const Sort = (props) => {
-  const {activeSort, changeSort} = props;
+const Sort = () => {
+  const {activeSort} = useSelector((state) => state.OFFERS);
+
+  const dispatch = useDispatch();
 
   const [openSort, setOpenSort] = useState(false);
 
@@ -14,7 +15,7 @@ const Sort = (props) => {
   };
 
   const handelSortChange = (evt) => {
-    changeSort(evt.target.innerText);
+    dispatch(incrementSort(evt.target.innerText));
     setOpenSort(false);
   };
 
@@ -37,20 +38,4 @@ const Sort = (props) => {
   );
 };
 
-Sort.propTypes = {
-  activeSort: PropTypes.string.isRequired,
-  changeSort: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  activeSort: state.activeSort,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  changeSort(sort) {
-    dispatch(ActionCreator.incrementSort(sort));
-  }
-});
-
-export {Sort};
-export default connect(mapStateToProps, mapDispatchToProps)(Sort);
+export default Sort;

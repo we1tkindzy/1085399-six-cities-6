@@ -1,68 +1,110 @@
+import {createAction} from "@reduxjs/toolkit";
+
 export const ActionType = {
-  INCREMENT_CITY: `list/incrementCity`,
-  INCREMENT_OFFERS: `list/incrementOffers`,
-  INCREMENT_SORT: `list/sort`,
+  INCREMENT_CITY: `offers/incrementCity`,
+  INCREMENT_SORT: `offers/sort`,
   INCREMENT_ACTIVE_OFFER: `offers/ActiveOffer`,
   INCREMENT_REMOVE_ACTIVE_OFFER: `offers/removeActiveOffer`,
+  INCREMENT_OFFERS: `data/incrementOffers`,
   LOAD_OFFERS: `data/loadOffers`,
   LOAD_OFFER: `data/loadOffer`,
   LOAD_NEAR_OFFERS: `data/loadNearOffers`,
   LOAD_REVIEWS: `data/laodReviews`,
   LOAD_FAVORITE: `data/loadFavorite`,
-  REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
-  REDIRECT_TO_ROUTE: `/redirectToRoute`,
+  REDIRECT_TO_ROUTE: `data/redirectToRoute`,
+  TOGGLE_FAVORITE: `data/toggleFavorite`,
+  TOGGLE_OPENED_CARD_FAVORITE: `data/toggleOpenedCardFavorite`,
+  ADD_TO_FAVORITE: `data/addToFavorite`,
+  REMOVE_FROM_FAVORITE: `data/removeFromFavorite`,
   AUTHORIZATION_INFO: `user/login`,
+  REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
 };
 
-export const ActionCreator = {
-  incrementCity: (city) => ({
-    type: ActionType.INCREMENT_CITY,
+export const incrementCity = createAction(ActionType.INCREMENT_CITY, (city) => {
+  return {
     payload: city,
-  }),
-  incrementOffers: () => ({
-    type: ActionType.INCREMENT_OFFERS,
-  }),
-  incrementSort: (sort) => ({
-    type: ActionType.INCREMENT_SORT,
+  };
+});
+
+export const incrementOffers = createAction(ActionType.INCREMENT_OFFERS);
+
+export const incrementSort = createAction(ActionType.INCREMENT_SORT, (sort) => {
+  return {
     payload: sort
-  }),
-  incrementActiveOffer: (id) => ({
-    type: ActionType.INCREMENT_ACTIVE_OFFER,
+  };
+});
+
+export const incrementActiveOffer = createAction(ActionType.INCREMENT_ACTIVE_OFFER, (id) => {
+  return {
     payload: id
-  }),
-  incrementRemoveActiveOffer: () => ({
-    type: ActionType.INCREMENT_REMOVE_ACTIVE_OFFER
-  }),
-  loadOffers: (offers) => ({
-    type: ActionType.LOAD_OFFERS,
+  };
+});
+
+export const incrementRemoveActiveOffer = createAction(ActionType.INCREMENT_REMOVE_ACTIVE_OFFER);
+
+export const loadOffers = createAction(ActionType.LOAD_OFFERS, (offers) => {
+  return {
     payload: offers
-  }),
-  loadOffer: (offer) => ({
-    type: ActionType.LOAD_OFFER,
+  };
+});
+
+export const loadOffer = createAction(ActionType.LOAD_OFFER, (offer) => {
+  return {
     payload: offer
-  }),
-  requiredAuthorization: (status) => ({
-    type: ActionType.REQUIRED_AUTHORIZATION,
+  };
+});
+
+export const requiredAuthorization = createAction(ActionType.REQUIRED_AUTHORIZATION, (status) => {
+  return {
     payload: status
-  }),
-  redirectToRoute: (url) => ({
-    type: ActionType.REDIRECT_TO_ROUTE,
+  };
+});
+
+export const redirectToRoute = createAction(ActionType.REDIRECT_TO_ROUTE, (url) => {
+  return {
     payload: url
-  }),
-  authorizationInfo: (info) => ({
-    type: ActionType.AUTHORIZATION_INFO,
+  };
+});
+
+export const authorizationInfo = createAction(ActionType.AUTHORIZATION_INFO, (info) => {
+  return {
     payload: info
-  }),
-  loadNearOffers: (offers) => ({
-    type: ActionType.LOAD_NEAR_OFFERS,
+  };
+});
+
+export const loadNearOffers = createAction(ActionType.LOAD_NEAR_OFFERS, (offers) => {
+  return {
     payload: offers
-  }),
-  laodReviews: (reviews) => ({
-    type: ActionType.LOAD_REVIEWS,
+  };
+});
+
+export const laodReviews = createAction(ActionType.LOAD_REVIEWS, (reviews) => {
+  return {
     payload: reviews
-  }),
-  loadFavorite: (offers) => ({
-    type: ActionType.LOAD_FAVORITE,
+  };
+});
+
+export const loadFavorite = createAction(ActionType.LOAD_FAVORITE, (offers) => {
+  return {
     payload: offers
-  }),
-};
+  };
+});
+export const toggleFavorite = createAction(ActionType.TOGGLE_FAVORITE, (id) => {
+  return {
+    payload: id
+  };
+});
+export const toggleOpenedCardFavorite = createAction(ActionType.TOGGLE_OPENED_CARD_FAVORITE);
+
+export const addToFavorite = createAction(ActionType.ADD_TO_FAVORITE, (offer) => {
+  return {
+    payload: offer
+  };
+});
+
+export const removeFromFavorite = createAction(ActionType.REMOVE_FROM_FAVORITE, (id) => {
+  return {
+    payload: id
+  };
+});
+

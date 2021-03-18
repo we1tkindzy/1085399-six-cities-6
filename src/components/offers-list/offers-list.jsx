@@ -4,17 +4,18 @@ import PlaceCard from '../card/card';
 import {cardProp} from '../card/card.prop';
 
 const OffersList = (props) => {
-  const {offers} = props;
+  const {offers, pageType} = props;
 
   return (
-    <div className="cities__places-list places__list tabs__content">
-      {offers.map((card, id) => <PlaceCard key={card + id} card={card} />)}
+    <div className={`${pageType} places__list`}>
+      {offers.map((card, id) => <PlaceCard key={card + id} card={card} pageType={pageType} />)}
     </div>
   );
 };
 
 OffersList.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.shape(cardProp).isRequired).isRequired,
+  pageType: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 };
 
 export default OffersList;

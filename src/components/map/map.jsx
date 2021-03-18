@@ -2,11 +2,13 @@ import React, {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import "leaflet/dist/leaflet.css";
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {cardProp} from '../card/card.prop';
 
 const Map = (props) => {
-  const {offers, city, activeOffer} = props;
+  const {offers, city} = props;
+  const {activeOffer} = useSelector((state) => state.OFFERS);
+
   const {latitude, longitude, zoom} = city.location;
 
   const mapRef = useRef();
@@ -53,7 +55,7 @@ const Map = (props) => {
   }, [city.name, activeOffer]);
 
   return (
-    <div id="map" style={{height: `100%`, width: `100%`}} ref={mapRef}></div>
+    <div id="map" style={{height: `100%`, width: `100%`}}></div>
   );
 };
 
@@ -67,12 +69,6 @@ Map.propTypes = {
     }),
     name: PropTypes.string.isRequired,
   }),
-  activeOffer: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  activeOffer: state.activeOffer
-});
-
-export {Map};
-export default connect(mapStateToProps, null)(Map);
+export default Map;

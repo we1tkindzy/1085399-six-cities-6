@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {useHistory} from 'react-router-dom';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {AuthorizationStatus} from '../../const';
 
-const Authorization = (props) => {
-  const {authorizationStatus, authorizationInfo} = props;
+const Authorization = () => {
+  const {authorizationStatus, authorizationInfo} = useSelector((state) => state.USER);
   const history = useHistory();
 
   const handelPushLoginScreen = (evt) => {
@@ -24,18 +23,4 @@ const Authorization = (props) => {
   }
 };
 
-Authorization.propTypes = {
-  authorizationStatus: PropTypes.string.isRequired,
-  authorizationInfo: PropTypes.shape({
-    email: PropTypes.string,
-    password: PropTypes.string,
-  }),
-};
-
-const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-  authorizationInfo: state.authorizationInfo,
-});
-
-export {Authorization};
-export default connect(mapStateToProps, null)(Authorization);
+export default Authorization;
