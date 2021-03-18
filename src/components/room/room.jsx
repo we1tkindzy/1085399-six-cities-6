@@ -8,7 +8,7 @@ import ReviewsList from '../reviews-list/rewiews-list';
 import Map from '../map/map';
 import {getRating} from '../../util';
 import OffersList from '../offers-list/offers-list';
-import {fetchOffer, fetchNearOffers, fetchReviews, onToggleCardFavorite} from '../../store/api-actions';
+import {onToggleCardFavorite, fetchOpenedOffer} from '../../store/api-actions';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import {toggleOpenedCardFavorite} from '../../store/action';
 
@@ -23,9 +23,7 @@ const Room = () => {
   const pathId = match.params.id.slice(1);
 
   if (String(openedOffer.id) !== pathId) {
-    dispatch(fetchNearOffers(pathId));
-    dispatch(fetchReviews(pathId));
-    dispatch(fetchOffer(pathId));
+    dispatch(fetchOpenedOffer(pathId));
 
     return (
       <LoadingScreen />
@@ -138,9 +136,8 @@ const Room = () => {
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{amountOffers}</span></h2>
                 {
-                  reviews
-                    ? <ReviewsList reviews={reviews}/>
-                    : <LoadingScreen />
+                  reviews.length &&
+                    <ReviewsList reviews={reviews}/>
                 }
 
                 {authorizationStatus === AuthorizationStatus.AUTH ? <FormSubmit /> : ``}
@@ -149,21 +146,19 @@ const Room = () => {
           </div>
           <section className="property__map map">
             {
-              nearOffers
-                ? <Map offers={nearOffers} city={city}/>
-                : <LoadingScreen />
+              nearOffers.length &&
+                <Map offers={nearOffers} city={city}/>
             }
           </section>
         </section>
         {
-          nearOffers
-            ? <div className="container">
+          nearOffers.length &&
+            <div className="container">
               <section className="near-places places">
                 <h2 className="near-places__title">Other places in the neighbourhood</h2>
                 <OffersList offers={nearOffers} pageType={PageType.ROOM} />
               </section>
             </div>
-            : <LoadingScreen />
         }
       </main>
     </div>

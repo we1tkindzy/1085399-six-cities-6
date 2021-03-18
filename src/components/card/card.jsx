@@ -78,4 +78,4 @@ PlaceCard.propTypes = {
   pageType: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 };
 
-export default PlaceCard;
+export default React.memo(PlaceCard);

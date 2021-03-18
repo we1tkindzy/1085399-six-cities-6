@@ -89,11 +89,13 @@ export const loadFavorite = createAction(ActionType.LOAD_FAVORITE, (offers) => {
     payload: offers
   };
 });
+
 export const toggleFavorite = createAction(ActionType.TOGGLE_FAVORITE, (id) => {
   return {
     payload: id
   };
 });
+
 export const toggleOpenedCardFavorite = createAction(ActionType.TOGGLE_OPENED_CARD_FAVORITE);
 
 export const addToFavorite = createAction(ActionType.ADD_TO_FAVORITE, (offer) => {
