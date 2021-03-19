@@ -18,4 +18,4 @@ OffersList.propTypes = {
   pageType: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 };
 
-export default OffersList;
+export default React.memo(OffersList);

@@ -8,24 +8,22 @@ export const fetchOffersList = () => (dispatch, _getState, api) => (
     .then(({data}) => dispatch(loadOffers(data.map((offer) => adaptOfferToclient(offer)))))
 );
 
-export const fetchOffer = (id) => (dispatch, _getState, api) => (
-  api.get(`/hotels/` + id)
-    .then(({data}) => dispatch(loadOffer(adaptOfferToclient(data))))
-    .catch((err) => {
-      notExisteOffer(
-          err, () => dispatch(redirectToRoute(AppRoute.NOT_FOUND))
-      );
-    })
-);
-
-export const fetchNearOffers = (id) => (dispatch, _getState, api) => (
-  api.get(`/hotels/${id}/nearby`)
-    .then(({data}) => dispatch(loadNearOffers(data.map((offer) => adaptOfferToclient(offer)))))
-);
-
-export const fetchReviews = (id) => (dispatch, _getState, api) => (
-  api.get(`comments/${id}`)
-    .then(({data}) => dispatch(laodReviews(data.map((offer) => adaptReviewToClient(offer)))))
+export const fetchOpenedOffer = (id) => (dispatch, _getState, api) => (
+  Promise.all([
+    api.get(`${APIRoute.OFFERS}/${id}`),
+    api.get(`${APIRoute.OFFERS}/${id}/nearby`),
+    api.get(`${APIRoute.REVIEWS}/${id}`)
+  ])
+  .then(([offer, nearby, reviews]) => {
+    dispatch(loadOffer(adaptOfferToclient(offer.data)));
+    dispatch(loadNearOffers(nearby.data.map((nearbyOffer) => adaptOfferToclient(nearbyOffer))));
+    dispatch(laodReviews(reviews.data.map((review) => adaptReviewToClient(review))));
+  })
+  .catch((err) => {
+    notExisteOffer(
+        err, () => dispatch(redirectToRoute(AppRoute.NOT_FOUND))
+    );
+  })
 );
 
 export const fetchFavoriteOffers = () => (dispatch, _getState, api) => (
@@ -69,5 +67,5 @@ export const login = ({login: email, password}) => (dispatch, _getState, api) =>
   api.post(APIRoute.LOGIN, {email, password})
     .then(({data}) => dispatch(authorizationInfo(data)))
     .then(() => dispatch(requiredAuthorization(AuthorizationStatus.AUTH)))
-    .then(() => dispatch(redirectToRoute(`/`)))
+    .then(() => dispatch(redirectToRoute(AppRoute.MAIN)))
 );

@@ -23,4 +23,4 @@ const Authorization = () => {
   }
 };
 
-export default Authorization;
+export default React.memo(Authorization);
