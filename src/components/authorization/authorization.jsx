@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import {AuthorizationStatus} from '../../const';
 
 const Authorization = () => {
-  const {authorizationStatus, authorizationInfo} = useSelector((state) => state.USER);
+  const {authorizationStatus, changeAuthorizationInfo} = useSelector((state) => state.USER);
   const history = useHistory();
 
   const handelPushLoginScreen = (evt) => {
@@ -14,7 +14,7 @@ const Authorization = () => {
 
   if (authorizationStatus === AuthorizationStatus.AUTH) {
     return (
-      <span onClick={handelPushLoginScreen} className="header__user-name user__name">{authorizationInfo.email}</span>
+      <span onClick={handelPushLoginScreen} className="header__user-name user__name">{changeAuthorizationInfo.email}</span>
     );
   } else {
     return (

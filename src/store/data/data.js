@@ -1,4 +1,4 @@
-import {incrementOffers, loadOffers, loadOffer, loadNearOffers, laodReviews, loadFavorite, toggleFavorite, toggleOpenedCardFavorite, addToFavorite, removeFromFavorite} from '../action';
+import {loadOffers, loadOffer, loadNearOffers, laodReviews, loadFavorite, toggleFavorite, toggleOpenedCardFavorite, addToFavorite, removeFromFavorite} from '../action';
 import {createReducer} from '@reduxjs/toolkit';
 
 
@@ -39,10 +39,6 @@ const initialState = {
 };
 
 const data = createReducer(initialState, (builder) => {
-  builder.addCase(incrementOffers, (state, action) => {
-    state.offers = action.payload;
-  });
-
   builder.addCase(loadOffers, (state, action) => {
     state.offers = action.payload;
     state.isDataLoaded = true;

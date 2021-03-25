@@ -29,9 +29,9 @@ const FormSubmit = () => {
 
 
   return (
-    <form onSubmit={(evt) => handleSubmit(evt)} className="reviews__form form" action="#" method="post">
+    <form data-testid="reviews-form" onSubmit={(evt) => handleSubmit(evt)} className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-      <div className="reviews__rating-form form__rating">
+      <div data-testid="reviews-form-rating" className="reviews__rating-form form__rating">
         {ratingArray.map((star, id) => (
           <React.Fragment key={id}>
             <input className="form__rating-input visually-hidden" name="rating" value={star.rating} id={`${star.rating}-stars`} type="radio" onChange={({target}) => {
@@ -45,11 +45,11 @@ const FormSubmit = () => {
           </React.Fragment>
         ))}
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved"
+      <textarea data-testid="reviews-form-input" className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved"
         onChange={({target}) => {
           setUserComment(target.value);
         }}></textarea>
-      <div className="reviews__button-wrapper">
+      <div data-testid="reviews-form-submit" className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>

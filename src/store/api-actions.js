@@ -1,4 +1,4 @@
-import {loadOffers, loadOffer, redirectToRoute, loadNearOffers, laodReviews, loadFavorite, toggleFavorite, addToFavorite, removeFromFavorite, authorizationInfo, requiredAuthorization} from "./action";
+import {loadOffers, loadOffer, redirectToRoute, loadNearOffers, laodReviews, loadFavorite, toggleFavorite, addToFavorite, removeFromFavorite, changeAuthorizationInfo, requiredAuthorization} from "./action";
 import {AuthorizationStatus, APIRoute, AppRoute} from "../const";
 import {adaptOfferToclient, adaptReviewToClient} from "./adapter";
 import {notExisteOffer, unAuthorizationUser} from '../api';
@@ -58,14 +58,14 @@ export const onToggleCardFavorite = (id, status) => (dispatch, _getState, api)=>
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoute.LOGIN)
-    .then(({data}) => dispatch(authorizationInfo(data)))
+    .then(({data}) => dispatch(changeAuthorizationInfo(data)))
     .then(() => dispatch(requiredAuthorization(AuthorizationStatus.AUTH)))
     .catch(() => {})
 );
 
 export const login = ({login: email, password}) => (dispatch, _getState, api) => (
   api.post(APIRoute.LOGIN, {email, password})
-    .then(({data}) => dispatch(authorizationInfo(data)))
+    .then(({data}) => dispatch(changeAuthorizationInfo(data)))
     .then(() => dispatch(requiredAuthorization(AuthorizationStatus.AUTH)))
     .then(() => dispatch(redirectToRoute(AppRoute.MAIN)))
 );

@@ -36,16 +36,16 @@ const PlaceCard = (props) => {
   };
 
   return (
-    <article className={`${pageType === favoriteCard ? PageType.FAVORITE.article : `cities__place-card`} place-card`} onMouseOver={() => cardHover(id)} onMouseLeave={() => cardHoverLeave()}>
+    <article data-testid={`card-${id}`} className={`${pageType === favoriteCard ? PageType.FAVORITE.article : `cities__place-card`} place-card`} onMouseOver={() => cardHover(id)} onMouseLeave={() => cardHoverLeave()}>
       <div className={`place-card__mark ${premiumTemplate}`} >
         <span>Premium</span>
       </div>
-      <div className={`${pageType === favoriteCard ? PageType.FAVORITE.img : `cities__image-wrapper`} place-card__image-wrapper`}>
+      <div data-testid={`card-${id}-img`} className={`${pageType === favoriteCard ? PageType.FAVORITE.img : `cities__image-wrapper`} place-card__image-wrapper`}>
         <Link to={getOfferPath(id)}>
           <img className="place-card__image" src={`${previewImage}`} width={`${pageType === favoriteCard ? PageType.FAVORITE.width : `260`}`} height={`${pageType === favoriteCard ? PageType.FAVORITE.height : `200`}`} alt="Place image" />
         </Link>
       </div>
-      <div className={`${pageType === favoriteCard ? PageType.FAVORITE.cardImfo : ``} place-card__info`}>
+      <div data-testid={`card-${id}-info`} className={`${pageType === favoriteCard ? PageType.FAVORITE.cardImfo : ``} place-card__info`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>

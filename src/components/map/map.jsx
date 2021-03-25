@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
-import "leaflet/dist/leaflet.css";
+import 'leaflet/dist/leaflet.css';
 import {useSelector} from 'react-redux';
 import {cardProp} from '../card/card.prop';
 
@@ -55,7 +55,7 @@ const Map = (props) => {
   }, [city.name, activeOffer]);
 
   return (
-    <div id="map" style={{height: `100%`, width: `100%`}}></div>
+    <div id="map" style={{height: `100%`, width: `100%`}} data-testid="map"></div>
   );
 };
 

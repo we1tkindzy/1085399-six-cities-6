@@ -22,7 +22,7 @@ const Sort = () => {
   return (
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by</span>
-      <span onClick={handelSortClick} className="places__sorting-type" tabIndex="0">
+      <span onClick={handelSortClick} className="places__sorting-type" data-testid="sort-type" tabIndex="0">
         {activeSort}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
