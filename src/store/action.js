@@ -5,7 +5,6 @@ export const ActionType = {
   INCREMENT_SORT: `offers/sort`,
   INCREMENT_ACTIVE_OFFER: `offers/ActiveOffer`,
   INCREMENT_REMOVE_ACTIVE_OFFER: `offers/removeActiveOffer`,
-  INCREMENT_OFFERS: `data/incrementOffers`,
   LOAD_OFFERS: `data/loadOffers`,
   LOAD_OFFER: `data/loadOffer`,
   LOAD_NEAR_OFFERS: `data/loadNearOffers`,
@@ -16,7 +15,7 @@ export const ActionType = {
   TOGGLE_OPENED_CARD_FAVORITE: `data/toggleOpenedCardFavorite`,
   ADD_TO_FAVORITE: `data/addToFavorite`,
   REMOVE_FROM_FAVORITE: `data/removeFromFavorite`,
-  AUTHORIZATION_INFO: `user/login`,
+  CHANGE_AUTHORIZATION_INFO: `user/changeLogin`,
   REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
 };
 
@@ -25,8 +24,6 @@ export const incrementCity = createAction(ActionType.INCREMENT_CITY, (city) => {
     payload: city,
   };
 });
-
-export const incrementOffers = createAction(ActionType.INCREMENT_OFFERS);
 
 export const incrementSort = createAction(ActionType.INCREMENT_SORT, (sort) => {
   return {
@@ -66,7 +63,7 @@ export const redirectToRoute = createAction(ActionType.REDIRECT_TO_ROUTE, (url) 
   };
 });
 
-export const authorizationInfo = createAction(ActionType.AUTHORIZATION_INFO, (info) => {
+export const changeAuthorizationInfo = createAction(ActionType.CHANGE_AUTHORIZATION_INFO, (info) => {
   return {
     payload: info
   };

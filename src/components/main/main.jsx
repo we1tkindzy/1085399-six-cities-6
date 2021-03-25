@@ -38,7 +38,7 @@ const MainScreen = () => {
     <div className="page page--gray page--main">
       <Header />
 
-      <main className="page__main page__main--index">
+      <main data-testid="main" className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">

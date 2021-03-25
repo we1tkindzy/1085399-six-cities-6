@@ -7,7 +7,7 @@ const OffersList = (props) => {
   const {offers, pageType} = props;
 
   return (
-    <div className={`${pageType} places__list`}>
+    <div data-testid="offers-list" className={`${pageType} places__list`}>
       {offers.map((card, id) => <PlaceCard key={card + id} card={card} pageType={pageType} />)}
     </div>
   );

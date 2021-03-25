@@ -1,9 +1,9 @@
 import {incrementCity, incrementSort, incrementActiveOffer, incrementRemoveActiveOffer} from '../action';
-import {CityName, SortType} from '../../const';
+import {SortType} from '../../const';
 import {createReducer} from '@reduxjs/toolkit';
 
 const initialState = {
-  city: CityName[0],
+  city: `Paris`,
   activeSort: SortType.POPULAR,
   activeOffer: false,
 };

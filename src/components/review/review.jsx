@@ -5,7 +5,7 @@ import {reviewsProp} from './review.prop';
 
 const Review = (props) => {
   const {review} = props;
-  const {comment, date, rating, user} = review;
+  const {id, comment, date, rating, user} = review;
 
   const ratingConversion = getRating(rating);
 
@@ -14,8 +14,8 @@ const Review = (props) => {
   const proClass = isPro ? `reviews__avatar-wrapper--pro` : ``;
 
   return (
-    <li className="reviews__item">
-      <div className="reviews__user user">
+    <li data-testid={`review-${id}`} className="reviews__item">
+      <div data-testid={`review-${id}-user-info`} className="reviews__user user">
         <div className={`reviews__avatar-wrapper ${proClass} user__avatar-wrapper`}>
           <img className="reviews__avatar user__avatar" src={`${avatarUrl}`} width="54" height="54" alt="Reviews avatar"/>
         </div>
@@ -23,7 +23,7 @@ const Review = (props) => {
           {name}
         </span>
       </div>
-      <div className="reviews__info">
+      <div data-testid={`review-${id}-info`} className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
             <span style={{width: `${ratingConversion}` + `%`}}></span>

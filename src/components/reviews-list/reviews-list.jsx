@@ -7,7 +7,7 @@ const ReviewList = (props) => {
   const {reviews} = props;
 
   return (
-    <ul className="reviews__list">
+    <ul data-testid="reviews-list" className="reviews__list">
       {reviews.map((review, i) => <Review key={review + i} review={review}/>)}
     </ul>
   );
