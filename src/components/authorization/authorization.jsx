@@ -12,15 +12,11 @@ const Authorization = () => {
     history.push(`/login`);
   };
 
-  if (authorizationStatus === AuthorizationStatus.AUTH) {
-    return (
-      <span onClick={handelPushLoginScreen} className="header__user-name user__name">{changeAuthorizationInfo.email}</span>
-    );
-  } else {
-    return (
-      <span onClick={handelPushLoginScreen} className="header__login">Sign in</span>
-    );
-  }
+  return (
+    <span data-testid="authorization" onClick={handelPushLoginScreen} className={`${authorizationStatus === AuthorizationStatus.AUTH ? `header__user-name user__name` : `header__login`}`}>
+      {authorizationStatus === AuthorizationStatus.AUTH ? changeAuthorizationInfo.email : `Sign in`}
+    </span>
+  );
 };
 
 export default React.memo(Authorization);

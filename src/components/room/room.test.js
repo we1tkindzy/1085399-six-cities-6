@@ -4,6 +4,7 @@ import {Router} from 'react-router-dom';
 import {createMemoryHistory} from 'history';
 import configureStore from 'redux-mock-store';
 import * as redux from 'react-redux';
+import userEvent from '@testing-library/user-event';
 import App from '../../components/app/app';
 
 const mockStore = configureStore();
@@ -293,26 +294,47 @@ const testRoomPage = {
   }
 };
 
-it(`Render 'Room'`, () => {
-  jest.spyOn(redux, `useSelector`);
-  jest.spyOn(redux, `useDispatch`);
+describe(`Test 'Room'`, () => {
+  it(`Render 'Room'`, () => {
+    jest.spyOn(redux, `useSelector`);
+    jest.spyOn(redux, `useDispatch`);
 
-  const history = createMemoryHistory();
-  history.push(`/offer/:1`);
+    const history = createMemoryHistory();
+    history.push(`/offer/:1`);
 
-  render(
-      <redux.Provider store={mockStore(testRoomPage)}>
-        <Router history={history}>
-          <App />
-        </Router>
-      </redux.Provider>
-  );
+    render(
+        <redux.Provider store={mockStore(testRoomPage)}>
+          <Router history={history}>
+            <App />
+          </Router>
+        </redux.Provider>
+    );
 
-  expect(screen.getByTestId(`header-logo`)).toBeInTheDocument();
-  expect(screen.getByTestId(`header-nav`)).toBeInTheDocument();
+    expect(screen.getByTestId(`header-logo`)).toBeInTheDocument();
+    expect(screen.getByTestId(`header-nav`)).toBeInTheDocument();
 
-  expect(screen.getByTestId(`room`)).toBeInTheDocument();
-  expect(screen.getByTestId(`room-inside`)).toBeInTheDocument();
-  expect(screen.getByTestId(`room-host`)).toBeInTheDocument();
-  expect(screen.getByText(`Meet the host`)).toBeInTheDocument();
+    expect(screen.getByTestId(`room`)).toBeInTheDocument();
+    expect(screen.getByTestId(`room-bookmark`)).toBeInTheDocument();
+    expect(screen.getByTestId(`room-inside`)).toBeInTheDocument();
+    expect(screen.getByTestId(`room-host`)).toBeInTheDocument();
+    expect(screen.getByText(`Meet the host`)).toBeInTheDocument();
+  });
+
+  it(`Logic should worked correctly`, () => {
+    const history = createMemoryHistory();
+    history.push(`/offer/:1`);
+
+    const fakeDispatch = jest.spyOn(redux, `useDispatch`).mockImplementation(() => jest.fn());
+
+    render(
+        <redux.Provider store={mockStore(testRoomPage)}>
+          <Router history={history}>
+            <App />
+          </Router>
+        </redux.Provider>
+    );
+
+    userEvent.click(screen.getByTestId(`room-bookmark`));
+    expect(fakeDispatch).toBeCalled();
+  });
 });

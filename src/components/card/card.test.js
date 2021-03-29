@@ -4,6 +4,7 @@ import {Router} from 'react-router-dom';
 import {createMemoryHistory} from 'history';
 import configureStore from 'redux-mock-store';
 import * as redux from 'react-redux';
+import userEvent from '@testing-library/user-event';
 import Card from './card';
 
 const mockStore = configureStore();
@@ -44,19 +45,43 @@ const testCard = {
   "type": `apartment`
 };
 
-it(`Render 'Card'`, () => {
-  render(
-      <redux.Provider store={mockStore({})}>
-        <Router history={history}>
-          <Card card={testCard} pageType="cities__places-list tabs__content" />
-        </Router>
-      </redux.Provider>
-  );
+describe(`Test 'Card'`, () => {
+  it(`Render 'Card'`, () => {
+    render(
+        <redux.Provider store={mockStore({})}>
+          <Router history={history}>
+            <Card card={testCard} pageType="cities__places-list tabs__content" />
+          </Router>
+        </redux.Provider>
+    );
 
-  expect(screen.getByTestId(`card-1`)).toBeInTheDocument();
-  expect(screen.getByTestId(`card-1-img`)).toBeInTheDocument();
-  expect(screen.getByTestId(`card-1-info`)).toBeInTheDocument();
+    expect(screen.getByTestId(`card-1`)).toBeInTheDocument();
+    expect(screen.getByTestId(`card-1-img`)).toBeInTheDocument();
+    expect(screen.getByTestId(`card-1-info`)).toBeInTheDocument();
+    expect(screen.getByTestId(`card-1-bookmark`)).toBeInTheDocument();
 
-  expect(screen.getByText(`Beautiful & luxurious studio at great location`)).toBeInTheDocument();
-  expect(screen.getByText(`apartment`)).toBeInTheDocument();
+    expect(screen.getByText(`Beautiful & luxurious studio at great location`)).toBeInTheDocument();
+    expect(screen.getByText(`apartment`)).toBeInTheDocument();
+  });
+
+  it(`Logic should worked correctly`, () => {
+    const fakeDispatch = jest.spyOn(redux, `useDispatch`).mockImplementation(() => jest.fn());
+
+    render(
+        <redux.Provider store={mockStore({})}>
+          <Router history={history}>
+            <Card card={testCard} pageType="cities__places-list tabs__content" />
+          </Router>
+        </redux.Provider>
+    );
+
+    userEvent.hover(screen.getByTestId(`card-1`));
+    expect(fakeDispatch).toBeCalled();
+
+    userEvent.unhover(screen.getByTestId(`card-1`));
+    expect(fakeDispatch).toBeCalled();
+
+    userEvent.click(screen.getByTestId(`card-1-bookmark`));
+    expect(fakeDispatch).toBeCalled();
+  });
 });
