@@ -78,7 +78,7 @@ const Room = () => {
                 <h1 className="property__name">
                   {title}
                 </h1>
-                <button onClick={() => cardFavorClickHandler(id, bookmarkClass)} className={`property__bookmark-button button ${bookmarkClass}`} type="button">
+                <button data-testid={`room-bookmark`} onClick={() => cardFavorClickHandler(id, bookmarkClass)} className={`property__bookmark-button button ${bookmarkClass}`} type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>

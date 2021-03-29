@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef} from 'react';
 import {SortType} from '../../const';
 import {incrementSort} from '../../store/action';
 import {useSelector, useDispatch} from 'react-redux';
@@ -8,15 +8,15 @@ const Sort = () => {
 
   const dispatch = useDispatch();
 
-  const [openSort, setOpenSort] = useState(false);
+  const selectRef = useRef();
 
   const handelSortClick = () => {
-    setOpenSort((prevState) => !prevState);
+    selectRef.current.classList.toggle(`places__options--opened`);
   };
 
   const handelSortChange = (evt) => {
     dispatch(incrementSort(evt.target.innerText));
-    setOpenSort(false);
+    selectRef.current.classList.remove(`places__options--opened`);
   };
 
   return (
@@ -28,12 +28,11 @@ const Sort = () => {
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      {openSort &&
-      <ul className="places__options places__options--custom places__options--opened">
+      <ul data-testid="sort-list" className="places__options places__options--custom" ref={selectRef}>
         {Object.values(SortType).map((sort, i) => (
-          <li key={sort + i} onClick={handelSortChange} className={`places__option ${sort === activeSort ? `places__option--active` : ``}`} tabIndex="0">{sort}</li>
+          <li key={sort + i} onClick={handelSortChange} data-testid={sort} className={`places__option ${sort === activeSort ? `places__option--active` : ``}`} tabIndex="0">{sort}</li>
         ))}
-      </ul>}
+      </ul>
     </form>
   );
 };

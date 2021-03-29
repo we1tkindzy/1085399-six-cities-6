@@ -45,3 +45,7 @@ export const PageType = {
     width: `150`
   },
 };
+
+export const reviewLength = {
+  MIN_LENGTH: 50
+};

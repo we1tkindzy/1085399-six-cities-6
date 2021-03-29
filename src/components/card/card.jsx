@@ -51,7 +51,7 @@ const PlaceCard = (props) => {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button onClick={() => cardFavoriteClickHandler(id, isFavorite)} className={`place-card__bookmark-button button ${bookmarkClass}`} type="button">
+          <button data-testid={`card-${id}-bookmark`} onClick={() => cardFavoriteClickHandler(id, isFavorite)} className={`place-card__bookmark-button button ${bookmarkClass}`} type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
