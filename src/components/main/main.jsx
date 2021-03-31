@@ -58,7 +58,7 @@ const MainScreen = () => {
               </section>
               <div className="cities__right-section">
                 <section className="cities__map map">
-                  <Map offers={cityOffers} city={cityCoords}/>
+                  <Map offers={cityOffers} city={cityCoords} pageType={PageType.MAIN}/>
                 </section>
               </div>
             </div>

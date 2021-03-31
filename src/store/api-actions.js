@@ -1,7 +1,10 @@
-import {loadOffers, loadOffer, redirectToRoute, loadNearOffers, laodReviews, loadFavorite, toggleFavorite, addToFavorite, removeFromFavorite, changeAuthorizationInfo, requiredAuthorization} from "./action";
-import {AuthorizationStatus, APIRoute, AppRoute} from "../const";
+import {loadOffers, loadOffer, redirectToRoute, loadNearOffers, laodReviews, loadReviewStatus,
+  loadFavorite, toggleFavorite, addToFavorite, removeFromFavorite,
+  changeAuthorizationInfo, requiredAuthorization, loadErrorMessage} from "./action";
+import {AuthorizationStatus, APIRoute, AppRoute, ReviewLoadingStatus} from "../const";
 import {adaptOfferToclient, adaptReviewToClient} from "./adapter";
-import {notExisteOffer, unAuthorizationUser} from '../api';
+import {notExisteOffer, unAuthorizationUser, submitFormError} from '../api';
+import {sortDateComments} from '../util';
 
 export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(APIRoute.OFFERS)
@@ -15,9 +18,10 @@ export const fetchOpenedOffer = (id) => (dispatch, _getState, api) => (
     api.get(`${APIRoute.REVIEWS}/${id}`)
   ])
   .then(([offer, nearby, reviews]) => {
+    const sortedComments = reviews.data.sort(sortDateComments);
     dispatch(loadOffer(adaptOfferToclient(offer.data)));
     dispatch(loadNearOffers(nearby.data.map((nearbyOffer) => adaptOfferToclient(nearbyOffer))));
-    dispatch(laodReviews(reviews.data.map((review) => adaptReviewToClient(review))));
+    dispatch(laodReviews(sortedComments.map((review) => adaptReviewToClient(review))));
   })
   .catch((err) => {
     notExisteOffer(
@@ -33,8 +37,19 @@ export const fetchFavoriteOffers = () => (dispatch, _getState, api) => (
 
 export const submitComment = (id, {review: comment, rating}) => (dispatch, _getState, api) => (
   api.post(`${APIRoute.REVIEWS}/${id}`, {comment, rating})
-  .then(({data}) => dispatch(laodReviews(data.map((commentItem) => adaptReviewToClient(commentItem)))))
-  .catch(() => {})
+  .then(({data}) => {
+    const sortedComments = data.sort(sortDateComments);
+    dispatch(laodReviews(sortedComments.map((commentItem) => adaptReviewToClient(commentItem))));
+    dispatch(loadReviewStatus(ReviewLoadingStatus.LOADED));
+  })
+  .catch((err) => {
+    submitFormError(
+        err, () => {
+          dispatch(loadErrorMessage(`Connection error.`));
+          dispatch(loadReviewStatus(ReviewLoadingStatus.LOAD_FAILED));
+        }
+    );
+  })
 );
 
 export const onToggleCardFavorite = (id, status) => (dispatch, _getState, api)=> (

@@ -12,11 +12,20 @@ const PrivateRoute = ({render, path, exact}) => {
       path={path}
       exact={exact}
       render={(routeProps) => {
-        return (
-          authorizationStatus === AuthorizationStatus.AUTH
-            ? render(routeProps)
-            : <Redirect to={AppRoute.LOGIN} />
-        );
+        switch (path) {
+          case AppRoute.LOGIN:
+            return (
+              authorizationStatus === AuthorizationStatus.NO_AUTH
+                ? render(routeProps)
+                : <Redirect to={AppRoute.MAIN} />
+            );
+          default:
+            return (
+              authorizationStatus === AuthorizationStatus.AUTH
+                ? render(routeProps)
+                : <Redirect to={AppRoute.LOGIN} />
+            );
+        }
       }}
     />
   );

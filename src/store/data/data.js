@@ -1,4 +1,4 @@
-import {loadOffers, loadOffer, loadNearOffers, laodReviews, loadFavorite, toggleFavorite, toggleOpenedCardFavorite, addToFavorite, removeFromFavorite} from '../action';
+import {loadOffers, loadOffer, loadNearOffers, laodReviews, loadReviewStatus, loadFavorite, toggleFavorite, toggleOpenedCardFavorite, addToFavorite, removeFromFavorite} from '../action';
 import {createReducer} from '@reduxjs/toolkit';
 
 
@@ -34,6 +34,7 @@ const initialState = {
   openedOffer: {},
   nearOffers: [],
   reviews: [],
+  reviewLoadingStatus: ``,
   favoriteOffers: [],
   isFavoriteOffersLoaded: false,
 };
@@ -76,6 +77,10 @@ const data = createReducer(initialState, (builder) => {
 
   builder.addCase(removeFromFavorite, (state, action) => {
     state.favoriteOffers = removeCardFromFavoriteOffers(action.payload, state.favoriteOffers);
+  });
+
+  builder.addCase(loadReviewStatus, (state, action) => {
+    state.reviewLoadingStatus = action.payload;
   });
 });
 

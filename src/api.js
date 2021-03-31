@@ -56,3 +56,14 @@ export const unAuthorizationUser = (err, unAuthorization) => {
 
   throw err;
 };
+
+export const submitFormError = (err, submitReview) => {
+  const responseStatus = err.response ? err.response.status : err.response;
+
+  if (responseStatus === undefined) {
+    submitReview();
+    throw err;
+  }
+
+  throw err;
+};

@@ -2,7 +2,7 @@ import MockAdapter from 'axios-mock-adapter';
 import {createAPI} from './../api';
 import {ActionType} from './action';
 import {fetchOffersList, fetchOpenedOffer, fetchFavoriteOffers, onToggleCardFavorite, submitComment, checkAuth, login} from './api-actions';
-import {APIRoute, AppRoute, AuthorizationStatus} from '../const';
+import {APIRoute, AppRoute, AuthorizationStatus, ReviewLoadingStatus} from '../const';
 
 const api = createAPI(() => {});
 
@@ -142,7 +142,8 @@ describe(`Async operation work correctly`, () => {
       }]);
     return submitterComments(dispatch, () => { }, api)
       .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(2);
+
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.LOAD_REVIEWS,
           payload: [
@@ -156,6 +157,11 @@ describe(`Async operation work correctly`, () => {
                 "isPro": false,
               }
             }]
+        });
+
+        expect(dispatch).toHaveBeenNthCalledWith(2, {
+          type: ActionType.LOAD_REVIEW_STATUS,
+          payload: ReviewLoadingStatus.LOADED
         });
       });
   });

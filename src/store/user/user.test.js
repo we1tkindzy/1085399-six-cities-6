@@ -1,4 +1,4 @@
-import {requiredAuthorization, changeAuthorizationInfo} from '../action';
+import {requiredAuthorization, changeAuthorizationInfo, loadErrorMessage} from '../action';
 import {user} from './user';
 
 describe(`Reducers work correctly`, () => {
@@ -7,6 +7,7 @@ describe(`Reducers work correctly`, () => {
       .toEqual({
         authorizationStatus: `NO_AUTH`,
         changeAuthorizationInfo: {},
+        errorMessage: ``
       });
   });
 
@@ -33,6 +34,17 @@ describe(`Reducers work correctly`, () => {
         changeAuthorizationInfo: {
           email: `Oliver.conner@gmail.com`
         }
+      });
+  });
+
+  it(`Reducer should load error message`, () => {
+    const state = {
+      errorMessage: ``
+    };
+
+    expect(user(state, loadErrorMessage(`Connection error.`)))
+      .toEqual({
+        errorMessage: `Connection error.`
       });
   });
 });

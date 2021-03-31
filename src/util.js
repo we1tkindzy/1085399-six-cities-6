@@ -24,3 +24,7 @@ export const sorting = (offers, sortType) => {
 };
 
 export const getOfferPath = (id) => AppRoute.ROOM.replace(/id/, id);
+
+export const sortDateComments = (a, b) => (
+  Date.parse(b.date) - Date.parse(a.date)
+);

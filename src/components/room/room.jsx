@@ -11,7 +11,9 @@ import OffersList from '../offers-list/offers-list';
 import {onToggleCardFavorite, fetchOpenedOffer} from '../../store/api-actions';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import {toggleOpenedCardFavorite} from '../../store/action';
+import Toast from '../toast/toast';
 
+const MAX_VISIBLE_REVIEWS = 10;
 
 const Room = () => {
   const {authorizationStatus} = useSelector((state) => state.USER);
@@ -52,9 +54,11 @@ const Room = () => {
   const proClass = isPro ? `property__avatar-wrapper--pro` : ``;
 
   const amountOffers = reviews.length;
+  const reviewList = reviews.length > 10 ? reviews.slice(0, MAX_VISIBLE_REVIEWS) : reviews;
 
   return (
     <div className="page">
+      <Toast />
       <Header />
 
       <main className="page__main page__main--property">
@@ -137,7 +141,7 @@ const Room = () => {
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{amountOffers}</span></h2>
                 {
                   reviews.length &&
-                    <ReviewsList reviews={reviews}/>
+                    <ReviewsList reviews={reviewList}/>
                 }
 
                 {authorizationStatus === AuthorizationStatus.AUTH ? <FormSubmit /> : ``}
@@ -147,7 +151,7 @@ const Room = () => {
           <section className="property__map map">
             {
               nearOffers.length &&
-                <Map offers={nearOffers} city={city}/>
+                <Map offers={[...nearOffers, openedOffer]} city={city} pageType={PageType.ROOM} />
             }
           </section>
         </section>

@@ -1,7 +1,7 @@
 import {incrementCity, incrementSort, incrementActiveOffer,
-  incrementRemoveActiveOffer, loadOffers, loadOffer, loadNearOffers, laodReviews,
+  incrementRemoveActiveOffer, loadOffers, loadOffer, loadNearOffers, laodReviews, loadReviewStatus,
   requiredAuthorization, redirectToRoute, changeAuthorizationInfo, loadFavorite,
-  toggleFavorite, toggleOpenedCardFavorite, addToFavorite, removeFromFavorite, ActionType} from "./action";
+  toggleFavorite, toggleOpenedCardFavorite, addToFavorite, removeFromFavorite, loadErrorMessage, ActionType} from "./action";
 
 describe(`Action creators work correctly`, () => {
   it(`Action creator for incrementing city returns correct action`, () => {
@@ -508,5 +508,21 @@ describe(`Action creators work correctly`, () => {
     };
 
     expect(removeFromFavorite(2)).toEqual(expectedAction);
+  });
+
+  it(`Action creator for loading review status returns correct action`, () => {
+    const expectedAction = {
+      type: ActionType.LOAD_REVIEW_STATUS,
+      payload: `Loading`
+    };
+    expect(loadReviewStatus(`Loading`)).toEqual(expectedAction);
+  });
+
+  it(`Action creator for loading error message returns correct action`, () => {
+    const expectedAction = {
+      type: ActionType.LOAD_ERROR_MESSAGE,
+      payload: `Connection error`
+    };
+    expect(loadErrorMessage(`Connection error`)).toEqual(expectedAction);
   });
 });

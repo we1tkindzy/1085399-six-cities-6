@@ -19,9 +19,11 @@ const App = () => {
         render={() => <FavoriteScreen />}
       >
       </PrivateRoute>
-      <Route exact path={AppRoute.LOGIN}>
-        <LoginScreen />
-      </Route>
+      <PrivateRoute exact
+        path={AppRoute.LOGIN}
+        render={() => <LoginScreen />}
+      >
+      </PrivateRoute>
       <Route exact path={AppRoute.ROOM}>
         <RoomScreen />
       </Route>
