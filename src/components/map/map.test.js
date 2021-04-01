@@ -122,8 +122,8 @@ const testCityCoords = {
 
 it(`Render 'Map'`, () => {
   render(
-      <redux.Provider store={mockStore({OFFERS: {activeOffer: false}})}>
-        <Map offers={testOffer} city={testCityCoords} />
+      <redux.Provider store={mockStore({OFFERS: {activeOffer: false}, DATA: {openedOffer: {id: 2}}})}>
+        <Map offers={testOffer} city={testCityCoords} pageType={`near-places__list`}/>
       </redux.Provider>
   );
 

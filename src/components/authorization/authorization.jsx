@@ -1,19 +1,23 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import {AuthorizationStatus} from '../../const';
+import {AuthorizationStatus, AppRoute} from '../../const';
 
 const Authorization = () => {
   const {authorizationStatus, changeAuthorizationInfo} = useSelector((state) => state.USER);
   const history = useHistory();
 
-  const handelPushLoginScreen = (evt) => {
+  const handelPushToScreen = (evt) => {
     evt.preventDefault();
-    history.push(`/login`);
+    if (authorizationStatus === AuthorizationStatus.AUTH) {
+      history.push(AppRoute.FAVORITES);
+    } else {
+      history.push(AppRoute.LOGIN);
+    }
   };
 
   return (
-    <span data-testid="authorization" onClick={handelPushLoginScreen} className={`${authorizationStatus === AuthorizationStatus.AUTH ? `header__user-name user__name` : `header__login`}`}>
+    <span data-testid="authorization" onClick={handelPushToScreen} className={`${authorizationStatus === AuthorizationStatus.AUTH ? `header__user-name user__name` : `header__login`}`}>
       {authorizationStatus === AuthorizationStatus.AUTH ? changeAuthorizationInfo.email : `Sign in`}
     </span>
   );

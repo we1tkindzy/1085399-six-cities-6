@@ -1,12 +1,13 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {submitComment} from '../../store/api-actions';
+import {loadReviewStatus} from '../../store/action';
 import {useSelector, useDispatch} from 'react-redux';
-import {reviewLength} from '../../const';
+import {reviewLength, ReviewLoadingStatus} from '../../const';
 
 const FormSubmit = () => {
-  const {openedOffer} = useSelector((state) => state.DATA);
+  const {openedOffer, reviewLoadingStatus} = useSelector((state) => state.DATA);
 
-  const {MIN_LENGTH} = reviewLength;
+  const {MIN_LENGTH, MAX_LENGTH} = reviewLength;
 
   const dispatch = useDispatch();
   const submitButtonRef = useRef();
@@ -27,9 +28,7 @@ const FormSubmit = () => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     dispatch(submitComment(openedOffer.id, {review, rating}));
-
-    formRef.current.reset();
-    setUserReview({review: ``, rating: 0});
+    dispatch(loadReviewStatus(ReviewLoadingStatus.LOADING));
   };
 
   const handleFormChange = (evt) => {
@@ -42,8 +41,29 @@ const FormSubmit = () => {
   };
 
   useEffect(() => {
-    submitButtonRef.current.disabled = !(rating && review.length > MIN_LENGTH);
+    submitButtonRef.current.disabled = !(rating && review.length > MIN_LENGTH && review.length < MAX_LENGTH);
   }, [review, rating]);
+
+  useEffect(() => {
+    switch (reviewLoadingStatus) {
+      case ReviewLoadingStatus.LOADING:
+        submitButtonRef.current.disabled = true;
+        commentRef.current.disabled = true;
+        break;
+      case ReviewLoadingStatus.LOADED:
+        commentRef.current.disabled = false;
+        formRef.current.reset();
+
+        setUserReview({review: ``, rating: 0});
+        dispatch(loadReviewStatus(``));
+        break;
+      case ReviewLoadingStatus.LOAD_FAILED:
+        submitButtonRef.current.disabled = false;
+        commentRef.current.disabled = false;
+        dispatch(loadReviewStatus(``));
+        break;
+    }
+  }, [reviewLoadingStatus]);
 
   return (
     <form data-testid="reviews-form" ref={formRef} onChange={(evt) => handleFormChange(evt)} onSubmit={(evt) => handleSubmit(evt)} className="reviews__form form" action="#" method="post">
@@ -51,7 +71,7 @@ const FormSubmit = () => {
       <div data-testid="reviews-form-rating" className="reviews__rating-form form__rating">
         {ratingArray.map((star, id) => (
           <React.Fragment key={id}>
-            <input className="form__rating-input visually-hidden" name="rating" value={star.rating} id={`${star.rating}-stars`} type="radio"/>
+            <input className="form__rating-input visually-hidden" name="rating" value={star.rating} id={`${star.rating}-stars`} type="radio" disabled={`${reviewLoadingStatus === ReviewLoadingStatus.LOADING ? `disabled` : ``}`}/>
             <label htmlFor={`${star.rating}-stars`} className="reviews__rating-label form__rating-label" title={star.title}>
               <svg className="form__star-image" width="37" height="33">
                 <use xlinkHref="#icon-star"></use>
@@ -61,7 +81,7 @@ const FormSubmit = () => {
         ))}
       </div>
       <textarea data-testid="reviews-form-input" className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved"
-        ref={commentRef} required minLength={MIN_LENGTH}
+        ref={commentRef} required minLength={MIN_LENGTH} maxLength={MAX_LENGTH}
       ></textarea>
       <div data-testid="reviews-form-submit" className="reviews__button-wrapper">
         <p className="reviews__help">

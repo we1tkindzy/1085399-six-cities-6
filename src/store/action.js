@@ -9,6 +9,7 @@ export const ActionType = {
   LOAD_OFFER: `data/loadOffer`,
   LOAD_NEAR_OFFERS: `data/loadNearOffers`,
   LOAD_REVIEWS: `data/laodReviews`,
+  LOAD_REVIEW_STATUS: `data/loadReviewStatus`,
   LOAD_FAVORITE: `data/loadFavorite`,
   REDIRECT_TO_ROUTE: `data/redirectToRoute`,
   TOGGLE_FAVORITE: `data/toggleFavorite`,
@@ -17,6 +18,7 @@ export const ActionType = {
   REMOVE_FROM_FAVORITE: `data/removeFromFavorite`,
   CHANGE_AUTHORIZATION_INFO: `user/changeLogin`,
   REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
+  LOAD_ERROR_MESSAGE: `user/loadErrorMessage`
 };
 
 export const incrementCity = createAction(ActionType.INCREMENT_CITY, (city) => {
@@ -107,3 +109,14 @@ export const removeFromFavorite = createAction(ActionType.REMOVE_FROM_FAVORITE, 
   };
 });
 
+export const loadReviewStatus = createAction(ActionType.LOAD_REVIEW_STATUS, (status) => {
+  return {
+    payload: status
+  };
+});
+
+export const loadErrorMessage = createAction(ActionType.LOAD_ERROR_MESSAGE, (message) => {
+  return {
+    payload: message
+  };
+});

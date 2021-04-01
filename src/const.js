@@ -47,5 +47,12 @@ export const PageType = {
 };
 
 export const reviewLength = {
-  MIN_LENGTH: 50
+  MIN_LENGTH: 50,
+  MAX_LENGTH: 300
+};
+
+export const ReviewLoadingStatus = {
+  LOADING: `LOADING`,
+  LOADED: `LOADED`,
+  LOAD_FAILED: `LOAD_FAILED`
 };

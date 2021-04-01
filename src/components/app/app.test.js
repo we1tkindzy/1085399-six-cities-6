@@ -11,7 +11,8 @@ const mockStore = configureStore();
 const testData = {
   USER: {
     authorizationStatus: `AUTH`,
-    changeAuthorizationInfo: {}
+    changeAuthorizationInfo: {},
+    errorMessage: ``
   },
   OFFERS: {
     city: `Paris`,

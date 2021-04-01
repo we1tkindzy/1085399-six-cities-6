@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
 import {useSelector} from 'react-redux';
 import {cardProp} from '../card/card.prop';
+import {PageType} from '../../const';
 
 const Map = (props) => {
-  const {offers, city} = props;
+  const {offers, city, pageType} = props;
   const {activeOffer} = useSelector((state) => state.OFFERS);
+  const {openedOffer} = useSelector((state) => state.DATA);
 
   const {latitude, longitude, zoom} = city.location;
 
@@ -31,8 +33,11 @@ const Map = (props) => {
       .addTo(mapRef.current);
 
     offers.map((card) => {
+      const isActiveOffer = activeOffer === card.id ? `./img/pin-active.svg` : `./img/pin.svg`;
+      const isOpenedOffer = openedOffer.id === card.id ? `./img/pin-active.svg` : `./img/pin.svg`;
+
       const customIcon = leaflet.icon({
-        iconUrl: `${activeOffer === card.id ? `./img/pin-active.svg` : `./img/pin.svg`}`,
+        iconUrl: pageType === PageType.MAIN ? isActiveOffer : isOpenedOffer,
         iconSize: [30, 30]
       });
 
@@ -69,6 +74,7 @@ Map.propTypes = {
     }),
     name: PropTypes.string.isRequired,
   }),
+  pageType: PropTypes.string.isRequired,
 };
 
 export default Map;

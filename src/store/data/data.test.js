@@ -1,4 +1,4 @@
-import {loadOffers, loadOffer, loadNearOffers, laodReviews, loadFavorite, toggleFavorite, toggleOpenedCardFavorite, addToFavorite, removeFromFavorite} from '../action';
+import {loadOffers, loadOffer, loadNearOffers, laodReviews, loadReviewStatus, loadFavorite, toggleFavorite, toggleOpenedCardFavorite, addToFavorite, removeFromFavorite} from '../action';
 import {data} from './data';
 
 describe(`Reducers work correctly`, () => {
@@ -10,6 +10,7 @@ describe(`Reducers work correctly`, () => {
         openedOffer: {},
         nearOffers: [],
         reviews: [],
+        reviewLoadingStatus: ``,
         favoriteOffers: [],
         isFavoriteOffersLoaded: false,
       });
@@ -130,6 +131,17 @@ describe(`Reducers work correctly`, () => {
         reviews: [
           {id: 1, comment: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.`}
         ]
+      });
+  });
+
+  it(`Reducer should load reviews status`, () => {
+    const state = {
+      reviewLoadingStatus: `false`
+    };
+
+    expect(data(state, loadReviewStatus(`Loading`)))
+      .toEqual({
+        reviewLoadingStatus: `Loading`
       });
   });
 

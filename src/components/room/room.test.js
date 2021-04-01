@@ -290,7 +290,8 @@ const testRoomPage = {
     changeAuthorizationInfo: {
       email: `Oliver.conner@gmail.com`,
       password: `123`
-    }
+    },
+    errorMessage: ``
   }
 };
 
